@@ -2,18 +2,19 @@
  * Created by ray.xie on 9/26/2016.
  */
 
-export const setState = state => ({
-  type: 'SET_STATE',
-  state,
+export const initialize = state => ({
+    type: 'INITIALIZE_STATE',
+    state,
 });
 
-export const vote = entry => ({
-  type: 'VOTE',
-  meta: { remote: true },
-  entry,
+
+export const change = value => ({
+    type: 'CHANGE',
+    value,
 });
 
-export const next = () => ({
-  meta: { remote: true },
-  type: 'NEXT',
+export const login = loginUser => ({
+    type: 'LOGIN',
+    loginUser,
 });
+
