@@ -3,7 +3,7 @@
  */
 import Immutable from 'immutable';
 
-export const INITIAL_STATE = Immutable.Map();
+export const INITIAL_STATE = Immutable.Map({ value: '' });
 
 export const setState = (state, newState) => state.merge(newState);
 
