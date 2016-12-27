@@ -3,8 +3,11 @@
  */
 import Immutable from 'immutable';
 
-export const INITIAL_STATE = Immutable.Map({ value: '' });
+export const INITIAL_STATE = Immutable.fromJS({
+    loginData: { username: '', password: '' },
+    userData: { id: '' },
+});
 
 export const setState = (state, newState) => state.merge(newState);
 
-export const change = (state, value) => state.set('value', value);
+export const succeedLogin = (state, userData) => state.set('userData', userData);

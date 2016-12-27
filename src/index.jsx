@@ -7,25 +7,26 @@ import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import io from 'socket.io-client';
+import createSagaMiddleware from 'redux-saga';
+import $ from 'jquery';
 import App from './components/App.jsx';
-import { LoginContainer } from './components/Login.jsx';
-// import { MainContainer } from './components/Main.jsx';
+import LoginFormContainer from './components/Login/element.jsx';
 import reducer from './reducers/reducer.js';
-import { initialize } from './action-creators/action-creator';
-import remoteActionMiddleware from './redux-middlewares/remote-action.js';
+import { initialize } from './action-creators';
+import { handleLoginSaga } from './components/Login/sagas';
+
+
+window.$ = $;
 
 const routes = (<Route component={App} >
-    <Route path="/" component={LoginContainer} />
+    <Route path="/" component={LoginFormContainer} />
 </Route>);
 
-// const socket = io(`${location.protocol}//${location.hostname}:8090`);
-// const createStoreWithMiddleware = applyMiddleware(remoteActionMiddleware(socket))(createStore);
-const store = createStore(reducer);
+const sagaMiddleware = createSagaMiddleware();
 
-// socket.on('state', state =>
-//     store.dispatch(setState(state))
-// );
+const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+
+sagaMiddleware.run(handleLoginSaga);
 
 store.dispatch(initialize())
 

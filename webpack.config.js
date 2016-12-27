@@ -5,30 +5,34 @@
 const webpack = require('webpack');
 
 module.exports = {
-  entry: [
-    'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/only-dev-server',
-    './src/index.jsx'],
+    entry: [
+        'babel-polyfill',
+        'webpack-dev-server/client?http://localhost:8080',
+        'webpack/hot/only-dev-server',
+        './src/index.jsx'],
 
-  module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loader: 'babel',
-    }],
-  },
-  output: {
-    path: `${__dirname}/dist`,
-    publicPath: '/',
-    filename: 'bundle.js',
-  },
+    module: {
+        loaders: [{
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            loaders: ['react-hot', 'babel'],
+        }],
+    },
+    output: {
+        path: `${__dirname}/dist`,
+        publicPath: '/',
+        filename: 'bundle.js',
+    },
 
-  devServer: {
-    contentBase: './dist',
-    hot: true,
-  },
+    devServer: {
+        contentBase: './dist',
+        hot: true,
+    },
 
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-  ],
+    debug: true,
+    devtool: 'source-map',
+
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+    ],
 };
