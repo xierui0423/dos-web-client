@@ -4,7 +4,6 @@ export const updateLoginForm = loginData => ({
 });
 
 export const login = loginData => ({
-    type: 'LOGIN',
+    type: 'LOGIN_ASYNC',
     loginData,
 });
-

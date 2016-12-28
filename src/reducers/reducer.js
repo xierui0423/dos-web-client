@@ -10,6 +10,13 @@ export default (state = INITIAL_STATE, action) => {
             return updateLoginForm(state, action.loginData);
         case 'SUCCEED_LOGIN':
             return succeedLogin(state, action.userData);
+        case 'START_LOADING':
+            return succeedLogin(state, action.loadingState);
+        case 'END_LOADING':
+            return succeedLogin(state, action.loadingState);
+        case 'SHOW_LOADING_ERROR':
+            return succeedLogin(state, action.loadingState);
+
         default:
             return state;
     }

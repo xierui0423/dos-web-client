@@ -32,6 +32,7 @@ module.exports = {
     debug: true,
     devtool: 'source-map',
 
+
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
     ],

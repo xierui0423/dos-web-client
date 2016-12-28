@@ -13,7 +13,8 @@ import App from './components/App.jsx';
 import LoginFormContainer from './components/Login/element.jsx';
 import reducer from './reducers/reducer.js';
 import { initialize } from './action-creators';
-import { handleLoginSaga } from './components/Login/sagas';
+
+import { handleLoginSaga, handleLoadingSaga } from './components/Login/sagas';
 
 
 window.$ = $;
@@ -27,8 +28,9 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 
 sagaMiddleware.run(handleLoginSaga);
+sagaMiddleware.run(handleLoadingSaga);
 
-store.dispatch(initialize())
+store.dispatch(initialize());
 
 ReactDOM.render(
     <Provider store={store} >

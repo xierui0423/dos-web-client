@@ -51,7 +51,7 @@ export const LoginForm = ({ loginData, userData, handleUpdateLoginForm, handleLo
                     className="login-password-pwd"
                     type="password"
                     value={loginData.get('password')}
-                    placeholder="Enter password......."
+                    placeholder="Enter password..."
                     onChange={evt => handleUpdateLoginForm(loginData.set('password', evt.target.value))}
                 />
             </Col>
