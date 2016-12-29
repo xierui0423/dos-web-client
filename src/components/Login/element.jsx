@@ -32,7 +32,7 @@ export const LoginForm = ({ loginData, userData, handleUpdateLoginForm, handleLo
                     className="login-username-ipt"
                     type="text"
                     value={loginData.get('username')}
-                    placeholder="Enter username......"
+                    placeholder="Enter username..."
                     onChange={evt => handleUpdateLoginForm(loginData.set('username', evt.target.value))}
                 />
             </Col>
@@ -51,7 +51,7 @@ export const LoginForm = ({ loginData, userData, handleUpdateLoginForm, handleLo
                     className="login-password-pwd"
                     type="password"
                     value={loginData.get('password')}
-                    placeholder="Enter password..."
+                    placeholder="Enter password......"
                     onChange={evt => handleUpdateLoginForm(loginData.set('password', evt.target.value))}
                 />
             </Col>

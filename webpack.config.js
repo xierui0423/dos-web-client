@@ -2,13 +2,14 @@
  * Created by ray.xie on 9/12/2016.
  */
 
+// eslint-disable-next-line
 const webpack = require('webpack');
 
 module.exports = {
     entry: [
         'babel-polyfill',
         'webpack-dev-server/client?http://localhost:8080',
-        'webpack/hot/only-dev-server',
+        'webpack/hot/dev-server',
         './src/index.jsx'],
 
     module: {

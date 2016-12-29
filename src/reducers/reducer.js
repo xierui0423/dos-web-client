@@ -16,9 +16,7 @@ export default (state = INITIAL_STATE, action) => {
             return succeedLogin(state, action.loadingState);
         case 'SHOW_LOADING_ERROR':
             return succeedLogin(state, action.loadingState);
-
         default:
             return state;
     }
 };
-
