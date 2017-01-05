@@ -3,7 +3,7 @@
  */
 import Immutable from 'immutable';
 import { succeedLogin } from '../core';
-import { updateLoginForm } from '../components/Login/helper';
+import { updateLoginForm } from '../components/login/helper';
 import { INITIAL_STATE } from '../state/state';
 
 

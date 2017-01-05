@@ -15,7 +15,7 @@ import { initialize } from './action-creators';
 import routes from './routes/routes.jsx';
 import middlewares from './middlewares';
 
-import { handleLoginSaga } from './components/Login/sagas';
+import { handleLoginSaga } from './components/login/sagas';
 import { clearLoadingMessageSaga } from './sagas/sagas';
 
 window.$ = $;

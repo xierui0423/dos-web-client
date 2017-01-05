@@ -6,7 +6,7 @@ import { delay } from 'redux-saga';
 
 const clearLoadingMessage = function* (action) {
     yield call(delay, action.duration === 0 ? 0 : action.duration ||
-    (action.type.match(/_ASYNC_SUCCEED$/ig) ? 1000 : 5000));
+    (action.type.match(/_ASYNC_SUCCEED$/ig) ? 0 : 2000));
 
     yield put({
         type: 'ASYNC_CLEAR',
