@@ -1,9 +1,7 @@
 /**
  * Created by ray.xie on 12/26/2016.
  */
-import { select, take, takeEvery, call, put } from 'redux-saga/effects';
-import Immutable from 'immutable';
-
+import { takeEvery, call, put } from 'redux-saga/effects';
 
 const fetchUser = loginData => $.ajax({
     url: `http://localhost:3000/view/test${loginData.get('username')}`,
@@ -12,23 +10,24 @@ const fetchUser = loginData => $.ajax({
 }).then(response => response);
 
 const fetchUserSaga = function* (action) {
-    const userData = yield call(fetchUser, action.loginData);
-    yield put({
-        type: 'SUCCEED_LOGIN',
-        userData: Immutable.fromJS(userData),
-    });
+    try {
+        yield put({
+            type: 'LOGIN_ASYNC_SUCCEED',
+            userData: yield call(fetchUser, action.loginData),
+            resolveTimestamp: action.meta.timestamp,
+            duration: 1000,
+        });
+    } catch (err) {
+        yield put({
+            type: 'LOGIN_ASYNC_ERROR',
+            error: err,
+            resolveTimestamp: action.meta.timestamp,
+            duration: 5000,
+        });
+    }
 };
-
 
 export const handleLoginSaga = function* () {
     yield takeEvery('LOGIN_ASYNC', fetchUserSaga);
 };
 
-export const handleLoadingSaga = function* () {
-    while (true) {
-        const action = yield take('*_ASYNC$');
-        // const state = yield select();
-        console.log('action', action);
-        // console.log('state after', state);
-    }
-};

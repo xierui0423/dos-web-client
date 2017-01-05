@@ -10,21 +10,22 @@ import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import $ from 'jquery';
 
-import reducer from './reducers/reducer.js';
+import reducer from './reducers/main-reducer.js';
 import { initialize } from './action-creators';
 import routes from './routes/routes.jsx';
+import middlewares from './middlewares';
 
-import { handleLoginSaga, handleLoadingSaga } from './components/Login/sagas';
-
+import { handleLoginSaga } from './components/Login/sagas';
+import { clearLoadingMessageSaga } from './sagas/sagas';
 
 window.$ = $;
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+const store = createStore(reducer, applyMiddleware(...middlewares, sagaMiddleware));
 
 sagaMiddleware.run(handleLoginSaga);
-sagaMiddleware.run(handleLoadingSaga);
+sagaMiddleware.run(clearLoadingMessageSaga);
 
 store.dispatch(initialize());
 
@@ -37,9 +38,9 @@ ReactDOM.render(
 
 // Enable Webpack hot module replacement for reducers
 if (module.hot) {
-    module.hot.accept('./reducers/reducer.js', () => {
+    module.hot.accept('./reducers/main-reducer.js', () => {
         // eslint-disable-next-line
-        const nextRootReducer = require('./reducers/reducer.js').default;
+        const nextRootReducer = require('./reducers/main-reducer.js').default;
         store.replaceReducer(nextRootReducer);
     });
 }
