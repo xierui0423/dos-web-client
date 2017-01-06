@@ -4,43 +4,52 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, hashHistory } from 'react-router';
+import { Router, browserHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
+import { combineReducers } from 'redux-immutable';
 import createSagaMiddleware from 'redux-saga';
 import $ from 'jquery';
 
-import reducer from './reducers/main-reducer.js';
-import { initialize } from './action-creators';
-import routes from './routes/routes.jsx';
+import reducers from './reducers';
+import sagas from './sagas';
 import middlewares from './middlewares';
+import rootRoute from './routes';
 
-import { handleLoginSaga } from './components/login/sagas';
-import { clearLoadingMessageSaga } from './sagas/sagas';
 
 window.$ = $;
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(reducer, applyMiddleware(...middlewares, sagaMiddleware));
+const store = createStore(combineReducers(Object.assign({}, reducers
+)), applyMiddleware(...middlewares, sagaMiddleware));
 
-sagaMiddleware.run(handleLoginSaga);
-sagaMiddleware.run(clearLoadingMessageSaga);
+sagas.forEach(sagaMiddleware.run);
 
-store.dispatch(initialize());
+store.dispatch({
+    type: 'INITIALIZE_STATE',
+});
+
+// Create an enhanced history that syncs navigation events with the store
+const history = syncHistoryWithStore(browserHistory, store, {
+    selectLocationState(state) {
+        return state.get('routing').toObject();
+    },
+});
 
 ReactDOM.render(
     <Provider store={store} >
-        <Router history={hashHistory} >{routes}</Router>
+        <Router history={history} >{rootRoute}</Router>
     </Provider>,
     document.getElementById('app')
 );
 
-// Enable Webpack hot module replacement for reducers
-if (module.hot) {
-    module.hot.accept('./reducers/main-reducer.js', () => {
-        // eslint-disable-next-line
-        const nextRootReducer = require('./reducers/main-reducer.js').default;
-        store.replaceReducer(nextRootReducer);
-    });
-}
+// // Enable Webpack hot module replacement for reducers
+// if (module.hot) {
+//     module.hot.accept('./reducers/main-reducer.js', () => {
+//         // eslint-disable-next-line
+//         const nextRootReducer = require('./reducers/root.js').default;
+//         store.replaceReducer(nextRootReducer);
+//     });
+// }

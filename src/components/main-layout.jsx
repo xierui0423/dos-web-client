@@ -6,19 +6,19 @@ import { connect } from 'react-redux';
 import LoadingModalContainer from '../components/loading/element.jsx';
 
 
-const App = props => (
+const Main = props => (
     <div>
         <LoadingModalContainer />
         {props.children}
     </div>
     );
 
-App.propTypes = {
+Main.propTypes = {
     // eslint-disable-next-line
     children: React.PropTypes.object,
 };
 
 
-const AppContainer = connect()(App);
+const MainContainer = connect()(Main);
 
-export default AppContainer;
+export default MainContainer;

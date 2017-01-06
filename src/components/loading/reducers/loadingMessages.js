@@ -1,16 +1,12 @@
 /**
- * Created by ray.xie on 9/20/2016.
+ * Created by ray.xie on 1/5/2017.
  */
+
 import Immutable from 'immutable';
-import { succeedLogin } from '../core';
-import { updateLoginForm } from '../components/login/helper';
-import { INITIAL_STATE } from '../state/state';
+import InitialState from '../../../initial-state';
 
-
-export default (state = INITIAL_STATE, action) => {
-    let nextState = state;
-
-    let loadingMessages = state.get('loadingMessages').toJSON();
+export default (state = InitialState.get('loadingMessages'), action) => {
+    let loadingMessages = state.toJSON();
 
     // Actions with certain pattern will affect the loading state of the app, we handle it here
     // Loading - 0
@@ -40,14 +36,5 @@ export default (state = INITIAL_STATE, action) => {
         loadingMessages = loadingMessages.filter(msg => msg.timestamp !== action.dismissTimestamp);
     }
 
-    nextState = state.set('loadingMessages', Immutable.fromJS(loadingMessages));
-
-    switch (action.type) {
-        case 'UPDATE_LOGIN_FORM':
-            return updateLoginForm(nextState, action.loginData);
-        case 'LOGIN_ASYNC_SUCCEED':
-            return succeedLogin(nextState, action.userData);
-        default:
-            return nextState;
-    }
+    return Immutable.fromJS(loadingMessages);
 };

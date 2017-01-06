@@ -3,7 +3,7 @@
  */
 import Immutable from 'immutable';
 
-export const INITIAL_STATE = Immutable.fromJS(
+export default Immutable.fromJS(
     {
         loginData: { username: '', password: '' },
         userData: { id: '' },

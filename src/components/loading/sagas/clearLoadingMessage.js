@@ -14,8 +14,8 @@ const clearLoadingMessage = function* (action) {
     });
 };
 
-export const clearLoadingMessageSaga = function* () {
+export default function* () {
     yield takeEvery(action => action.type.match(/_ASYNC_SUCCEED$/ig), clearLoadingMessage);
     yield takeEvery(action => action.type.match(/_ASYNC_ERROR$/ig), clearLoadingMessage);
-};
+}
 

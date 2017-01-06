@@ -10,14 +10,14 @@ import {
 } from 'react-bootstrap';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import { updateLoginForm, login } from './action-creators.js';
+import { updateLoginForm, login } from './action-creators/login';
 
-export const LoginForm = ({ loadingMessages, loginData, userData, handleUpdateLoginForm, handleLogin }) => {
+export const LoginForm = ({ loginData, userData, handleUpdateLoginForm, handleLogin }) => {
     const getValidationState = () =>
         // const length = value.length;
         // if (length > 10) return 'success';
         // else if (length > 5) return 'warning';
-        'error';
+        'success';
 
     return (<Form horizontal >
         <FormGroup
@@ -59,18 +59,16 @@ export const LoginForm = ({ loadingMessages, loginData, userData, handleUpdateLo
         </FormGroup>
         <FormGroup>
             <Col smOffset={2} sm={10} >
-                <Button type="button" onClick={() => handleLogin(loginData)} >
+                <Button bsStyle="primary" type="button" onClick={() => handleLogin(loginData)} >
                     Sign in
                 </Button>
             </Col>
         </FormGroup>
         <HelpBlock>{userData.get('id') ? userData.get('id') : 'Validation is based on string length.'}</HelpBlock>
-        {loadingMessages.map(x => <HelpBlock>{x}</HelpBlock>)}
     </Form>);
 };
 
 LoginForm.propTypes = {
-    loadingMessages: ImmutablePropTypes.list,
     loginData: ImmutablePropTypes.map,
     userData: ImmutablePropTypes.map,
     handleUpdateLoginForm: React.PropTypes.func,
@@ -79,7 +77,6 @@ LoginForm.propTypes = {
 
 const mapStateToProps = state => (
     {
-        loadingMessages: state.get('loadingMessages'),
         loginData: state.get('loginData'),
         userData: state.get('userData'),
     }
