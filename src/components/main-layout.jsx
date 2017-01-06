@@ -7,7 +7,7 @@ import LoadingModalContainer from '../components/loading/element.jsx';
 
 
 const Main = props => (
-    <div>
+    <div className="main-wrapper">
         <LoadingModalContainer />
         {props.children}
     </div>

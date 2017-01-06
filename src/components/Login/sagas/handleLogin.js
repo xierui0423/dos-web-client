@@ -4,9 +4,11 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
 
 const fetchUser = loginData => $.ajax({
-    url: `http://localhost:3000/view/test${loginData.get('username')}`,
-    method: 'GET',
+    url: 'http://localhost:3000/api/public/account/user/login/',
+    method: 'POST',
+    contentType: 'application/json',
     dataType: 'json',
+    data: JSON.stringify({ username: loginData.get('username'), password: loginData.get('password') }),
 }).then(response => response);
 
 const fetchUserSaga = function* (action) {
