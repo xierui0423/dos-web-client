@@ -3,11 +3,11 @@
  */
 import React from 'react';
 import { Route } from 'react-router';
-import AppContainer from '../components/App.jsx';
+import MainContainer from '../components/main-layout.jsx';
 import LoginFormContainer from '../components/login/element.jsx';
 
 
-const routes = (<Route component={AppContainer} >
+const routes = (<Route component={MainContainer} >
     <Route path="/" component={LoginFormContainer} />
 </Route>);
 

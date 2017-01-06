@@ -31,4 +31,3 @@ export default function* () {
     yield takeEvery('LOGIN_ASYNC', fetchUserSaga);
 }
 
-

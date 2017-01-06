@@ -8,5 +8,5 @@ import clearLoadingMessageSaga from '../components/loading/sagas/clearLoadingMes
 
 export default [
     handleLoginSaga,
-    clearLoadingMessageSaga
+    clearLoadingMessageSaga,
 ];
