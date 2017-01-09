@@ -60,7 +60,7 @@ export const LoginForm = ({ loginData, userData, handleUpdateLoginForm, handleLo
         <FormGroup>
             <Col smOffset={2} sm={10} >
                 <Button bsStyle="primary" type="button" onClick={() => handleLogin(loginData)} >
-                    Sign in
+                    Login
                 </Button>
             </Col>
         </FormGroup>

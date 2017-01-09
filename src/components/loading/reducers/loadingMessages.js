@@ -29,7 +29,7 @@ export default (state = InitialState.get('loadingMessages'), action) => {
         loadingMessages = loadingMessages.filter(msg => msg.timestamp !== action.resolveTimestamp);
         loadingMessages.push({
             loading: -1,
-            message: action.error.responseText || action.error || 'Error Happened!',
+            message: (action.error && action.error.responseText) || action.error || 'Error Happened!',
             timestamp: action.meta.timestamp,
         });
     } else if (action.type === 'ASYNC_CLEAR') {

@@ -4,7 +4,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, browserHistory } from 'react-router';
+import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
@@ -20,6 +20,13 @@ import rootRoute from './routes';
 
 window.$ = $;
 
+$(document).ajaxError((event, xhr) => {
+    // Redirect to login view on authentication failure
+    if (xhr.status === 401) {
+        hashHistory.push('login');
+    }
+});
+
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(combineReducers(Object.assign({}, reducers
@@ -32,7 +39,7 @@ store.dispatch({
 });
 
 // Create an enhanced history that syncs navigation events with the store
-const history = syncHistoryWithStore(browserHistory, store, {
+const history = syncHistoryWithStore(hashHistory, store, {
     selectLocationState(state) {
         return state.get('routing').toObject();
     },
