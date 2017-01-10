@@ -1,7 +1,3 @@
-/**
- * Created by ray.xie on 1/5/2017.
- */
-
 import Immutable from 'immutable';
 import InitialState from '../../../initial-state';
 

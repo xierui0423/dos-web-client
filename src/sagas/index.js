@@ -1,8 +1,3 @@
-/**
- * Created by ray.xie on 1/5/2017.
- */
-
-
 import loginSaga from '../components/login/sagas/loginSaga';
 import fetchUserSaga from '../components/user/sagas/fetchUser';
 import logoutSaga from '../components/user/sagas/logout';

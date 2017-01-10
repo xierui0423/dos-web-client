@@ -1,6 +1,3 @@
-/**
- * Created by ray.xie on 12/26/2016.
- */
 import { takeEvery, call, put } from 'redux-saga/effects';
 import { hashHistory } from 'react-router';
 

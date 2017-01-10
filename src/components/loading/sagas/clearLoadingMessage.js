@@ -1,6 +1,3 @@
-/**
- * Created by ray.xie on 1/4/2017.
- */
 import { call, takeEvery, put } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 

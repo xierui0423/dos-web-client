@@ -1,7 +1,3 @@
-/**
- * Created by ray.xie on 9/12/2016.
- */
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, hashHistory } from 'react-router';
@@ -33,10 +29,6 @@ const store = createStore(combineReducers(Object.assign({}, reducers
 )), applyMiddleware(...middlewares, sagaMiddleware));
 
 sagas.forEach(sagaMiddleware.run);
-
-store.dispatch({
-    type: 'INITIALIZE_STATE',
-});
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(hashHistory, store, {

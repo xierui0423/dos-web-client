@@ -1,6 +1,3 @@
-/**
- * Created by ray.xie on 12/29/2016.
- */
 import React from 'react';
 import { Route } from 'react-router';
 import MainContainer from '../components/main-layout.jsx';

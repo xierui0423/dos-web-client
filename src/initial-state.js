@@ -1,6 +1,3 @@
-/**
- * Created by ray.xie on 1/4/2017.
- */
 import Immutable from 'immutable';
 
 export default Immutable.fromJS(

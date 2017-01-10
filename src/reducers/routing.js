@@ -1,6 +1,3 @@
-/**
- * Created by ray.xie on 1/6/2017.
- */
 import Immutable from 'immutable';
 import {
     LOCATION_CHANGE,
