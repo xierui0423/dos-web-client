@@ -9,9 +9,9 @@ export default (sagaReducerName, url, method, actionDataField,
         method,
         contentType: 'application/json',
         dataType: 'json',
-        data: JSON.stringify(data),
+        data,
         xhrFields: {
-            withCredentials,
+            withCredentials: true,
         },
     }).then(response => response);
 
@@ -19,7 +19,7 @@ export default (sagaReducerName, url, method, actionDataField,
         try {
             yield put({
                 type: `${sagaReducerName}_ASYNC_SUCCEED`,
-                data: yield call(apiInvoker, dataParser(action)),
+                [actionDataField]: yield call(apiInvoker, dataParser && dataParser(action)),
                 resolveTimestamp: action.meta.timestamp,
                 duration: succeedDuration,
             });
