@@ -1,20 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, hashHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
+import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import createSagaMiddleware from 'redux-saga';
 import $ from 'jquery';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import reducers from './reducers';
 import sagas from './sagas';
 import middlewares from './middlewares';
 import rootRoute from './routes';
 
-
 window.$ = $;
+
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
 
 $(document).ajaxError((event, xhr) => {
     // Redirect to login view on authentication failure
@@ -26,7 +30,7 @@ $(document).ajaxError((event, xhr) => {
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(combineReducers(Object.assign({}, reducers
-)), applyMiddleware(...middlewares, sagaMiddleware));
+)), applyMiddleware(...middlewares, sagaMiddleware, routerMiddleware(hashHistory)));
 
 sagas.forEach(sagaMiddleware.run);
 

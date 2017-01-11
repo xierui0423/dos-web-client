@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    Col,
-    Form,
-    FormGroup,
-    Button,
-    HelpBlock,
-} from 'react-bootstrap';
+import RaisedButton from 'material-ui/RaisedButton';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { fetchUser, logout } from './action-creators/user';
@@ -21,23 +15,18 @@ class UserPanel extends React.Component {
 
     render() {
         return (this.props.userData.get('id') ?
-            <Form horizontal >
-                <HelpBlock>Signed in as: {this.props.userData.get('username')}</HelpBlock>
-                <FormGroup>
-                    <Col smOffset={2} sm={10} >
-                        <Button
-                            bsStyle="primary" type="button"
-                            onClick={() => this.props.handleLogout()}
-                        >
+            <div>
+                <div>Signed in as: {this.props.userData.get('username')}</div>
+                <RaisedButton
+                    primary type="button"
+                    onClick={() => this.props.handleLogout()}
+                >
                             Logout
-                        </Button>
-                    </Col>
-                </FormGroup>
-            </Form>
+                        </RaisedButton>
+            </div>
             : null);
     }
 }
-
 
 UserPanel.propTypes = {
     userData: ImmutablePropTypes.map,

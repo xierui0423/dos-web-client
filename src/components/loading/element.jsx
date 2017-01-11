@@ -1,25 +1,11 @@
 import React from 'react';
-import {
-    Modal,
-    HelpBlock,
-} from 'react-bootstrap';
+import Dialog from 'material-ui/Dialog';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
-export const LoadingModal = ({ loadingMessages }) => {
-
-    return (loadingMessages.size ? <Modal show>
-        <Modal.Header>
-            <Modal.Title>Loading...</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            {loadingMessages.map(x => <HelpBlock key={x.get('timestamp')}>{x.get('message')}</HelpBlock>)}
-        </Modal.Body>
-        <Modal.Footer>
-            Waiting while loading...
-        </Modal.Footer>
-    </Modal> : null);
-};
+export const LoadingModal = ({ loadingMessages }) => (loadingMessages.size ? <Dialog open title="Loading...">
+    {loadingMessages.map(x => <div key={x.get('timestamp')}>{x.get('message')}</div>)}
+</Dialog> : null);
 
 LoadingModal.propTypes = {
     loadingMessages: ImmutablePropTypes.list,

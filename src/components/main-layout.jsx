@@ -1,13 +1,19 @@
 import React from 'react';
+import Immutable from 'immutable';
 import { connect } from 'react-redux';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import LoadingModalContainer from '../components/loading/element.jsx';
-
+import NavigationContainer from '../components/navigation/element.jsx';
+import config from '../config';
 
 const Main = props => (
-    <div className="main-wrapper">
-        <LoadingModalContainer />
-        {props.children}
-    </div>
+    <MuiThemeProvider>
+        <div className="main-wrapper">
+            <LoadingModalContainer />
+            <NavigationContainer navigationItems={Immutable.fromJS(config.navigationItems)} />
+            {props.children}
+        </div>
+    </MuiThemeProvider>
     );
 
 Main.propTypes = {
