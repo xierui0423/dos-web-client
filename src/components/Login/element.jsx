@@ -5,7 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { updateLoginForm, login } from './action-creators/login';
 
-export const LoginForm = ({ loginData, userData, handleUpdateLoginForm, handleLogin }) => {
+export const LoginForm = ({ loginData, handleUpdateLoginForm, handleLogin }) => {
     return (<div>
 
         <TextField
@@ -35,7 +35,6 @@ export const LoginForm = ({ loginData, userData, handleUpdateLoginForm, handleLo
 
 LoginForm.propTypes = {
     loginData: ImmutablePropTypes.map,
-    userData: ImmutablePropTypes.map,
     handleUpdateLoginForm: React.PropTypes.func,
     handleLogin: React.PropTypes.func,
 };
@@ -43,7 +42,6 @@ LoginForm.propTypes = {
 const mapStateToProps = state => (
     {
         loginData: state.get('loginData'),
-        userData: state.get('userData'),
     }
 );
 
