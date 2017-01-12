@@ -6,5 +6,6 @@ export default Immutable.fromJS(
         userData: { id: '' },
         loadingMessages: [],
         navigation: { open: true, disabledUrls: [] },
+        playerData: { createStep: 1 },
     }
 );

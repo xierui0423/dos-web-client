@@ -2,6 +2,11 @@ import Immutable from 'immutable';
 import InitialState from '../../../initial-state';
 
 export default (state = InitialState.get('loadingMessages'), action) => {
+
+    if (action.type === 'LOGOUT_ASYNC_SUCCEED') {
+        return InitialState.get('loadingMessages');
+    }
+
     let loadingMessages = state.toJSON();
 
     // Actions with certain pattern will affect the loading state of the app, we handle it here
