@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 export const LoadingModal = ({ loadingMessages }) => (loadingMessages.size ?
     <Dialog open title="Loading..." >
-        {loadingMessages.map(x => <div key={x.get('timestamp')} >{x.get('message')}</div>)}
+        {loadingMessages.map((message, index) => <div key={index} >{message.get('message')}</div>)}
     </Dialog> : null);
 
 LoadingModal.propTypes = {

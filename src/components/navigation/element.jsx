@@ -9,12 +9,12 @@ export const Navigation = ({ navigate, navigation, navigationItems, routing }) =
     (<Drawer open={navigation.get('open')} openSecondary >
         {
             navigationItems.map(
-                (item) => {
+                (item, index) => {
                     const url = item.get('urls').get(0);
                     const checked = item.get('urls').contains(routing.get('locationBeforeTransitions').pathname);
 
                     return (<MenuItem
-                        key={url}
+                        key={index}
                         checked={checked}
                         onClick={() => {
                             navigate(url);
