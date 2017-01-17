@@ -11,7 +11,9 @@ const Main = props => (
         <div className="main-wrapper">
             <LoadingModalContainer />
             <NavigationContainer navigationItems={Immutable.fromJS(config.navigationItems)} />
-            {props.children}
+            <div className="content" style={{ marginRight: '256px' }}>
+                {props.children}
+            </div>
         </div>
     </MuiThemeProvider>
     );

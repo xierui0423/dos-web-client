@@ -1,6 +1,4 @@
 export default () => next => (action) => {
-    console.log(action.type);
-
     // Timestamp the action
     return next(
         Object.assign(action,

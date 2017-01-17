@@ -1,56 +1,41 @@
 import React from 'react';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import { updateLoginForm, login } from './action-creators/login';
+import { Field, reduxForm } from 'redux-form/immutable';
+import { TextField } from 'redux-form-material-ui';
+import RaisedButton from 'material-ui/RaisedButton';
+import { login } from './action-creators/login';
 
-export const LoginForm = ({ loginData, handleUpdateLoginForm, handleLogin }) => {
-    return (<div>
+const LoginForm = ({ handleSubmit, pristine, submitting, handleLogin }) =>
+    (<form onSubmit={handleSubmit(handleLogin)} >
 
-        <TextField
+        <Field
+            name="username"
+            component={TextField}
             id="login-username-ipt"
             type="text"
             hintText="Username"
             floatingLabelText="Username"
-            value={loginData.get('username')}
-            onChange={evt => handleUpdateLoginForm(loginData.set('username', evt.target.value))}
-        /><br />
+            floatingLabelFixed
+        />
 
-        <TextField
+        <Field
+            name="password"
+            component={TextField}
             id="login-password-ipt"
             type="password"
             hintText="Password"
             floatingLabelText="Password"
-            value={loginData.get('password')}
-            onChange={evt => handleUpdateLoginForm(loginData.set('password', evt.target.value))}
-        /><br />
+            floatingLabelFixed
+        />
 
+        <RaisedButton primary type="submit" disabled={pristine || submitting}>
+            Login
+        </RaisedButton >
+    </form>);
 
-        <RaisedButton primary type="button" onClick={() => handleLogin(loginData)} >
-                    Login
-                </RaisedButton >
-    </div>);
-};
-
-LoginForm.propTypes = {
-    loginData: ImmutablePropTypes.map,
-    handleUpdateLoginForm: React.PropTypes.func,
-    handleLogin: React.PropTypes.func,
-};
-
-const mapStateToProps = state => (
-    {
-        loginData: state.get('loginData'),
-    }
-);
-
-const LoginFormContainer = connect(
-    mapStateToProps,
-    {
-        handleUpdateLoginForm: updateLoginForm,
-        handleLogin: login,
-    }
-)(LoginForm);
-
-export default LoginFormContainer;
+export default connect(undefined, {
+    handleLogin: login,
+})(reduxForm({
+    form: 'login',  // a unique identifier for this form
+    onSubmit: login,
+})(LoginForm));
