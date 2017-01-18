@@ -4,52 +4,48 @@ import {
     Stepper,
     StepLabel,
 } from 'material-ui/Stepper';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import { updateStep } from './action-creators/player';
+import { updateStep, createPlayer } from './action-creators/player';
+import FirstStepForm from './_subviews/1-player-basic/element.jsx';
+import SecondStepForm from './_subviews/2-player-attributes/element.jsx';
+import ThirdStepForm from './_subviews/3-player-skills/element.jsx';
 
-export const PlayerCreator = ({ playerData, handleUpdateStep }) => {
+export const PlayerCreator = ({ playerData, handleUpdateStep, handleCreatePlayer }) => {
     const stepIndex = playerData.get('createStep') - 1;
 
-    return (<div style={{ width: '100%', maxWidth: 700, margin: 'auto' }}>
-        <Stepper activeStep={stepIndex}>
+    return (<div style={{ width: '100%', maxWidth: 700, margin: 'auto' }} >
+        <Stepper activeStep={stepIndex} >
             <Step>
-                <StepLabel>Select campaign settings</StepLabel>
+                <StepLabel>Form the body shape</StepLabel>
             </Step>
             <Step>
-                <StepLabel>Create an ad group</StepLabel>
+                <StepLabel>Assign attributes</StepLabel>
             </Step>
             <Step>
-                <StepLabel>Create an ad</StepLabel>
+                <StepLabel>Equip skills</StepLabel>
             </Step>
         </Stepper>
-        <div style={{ margin: '0 16px' }}>
-            <div>
-                <div style={{ marginTop: 12 }}>
-                    <FlatButton
-                        label="Back"
-                        disabled={stepIndex === 0}
-                        onTouchTap={() => handleUpdateStep(false)}
-                        style={{ marginRight: 12 }}
-                    />
-                    <RaisedButton
-                        label={stepIndex === 2 ? 'Finish' : 'Next'}
-                        disabled={stepIndex === 2}
-                        primary
-                        onTouchTap={() => handleUpdateStep(true)}
-                    />
-                </div>
-            </div>
-        </div>
-    </div>);
-};
 
-PlayerCreator.propTypes = {
-    playerData: ImmutablePropTypes.map,
-    handleUpdateStep: React.PropTypes.func,
+        <div>
+            {stepIndex === 0 &&
+            <FirstStepForm
+                onSubmit={() => handleUpdateStep(true)}
+            />}
+            {stepIndex === 1 &&
+            <SecondStepForm
+                previousPage={() => handleUpdateStep(false)}
+                onSubmit={() => handleUpdateStep(true)}
+            />}
+            {stepIndex === 2 &&
+            <ThirdStepForm
+                previousPage={() => handleUpdateStep(false)}
+                onSubmit={handleCreatePlayer}
+            />}
+        </div>
+
+    </div>);
 };
 
 const mapStateToProps = state => (
@@ -61,6 +57,7 @@ const mapStateToProps = state => (
 const PlayerCreatorContainer = connect(
     mapStateToProps,
     {
+        handleCreatePlayer: createPlayer,
         handleUpdateStep: updateStep,
     }
 )(PlayerCreator);

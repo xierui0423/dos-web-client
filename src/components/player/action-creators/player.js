@@ -3,7 +3,7 @@ export const updateStep = isForward => ({
     isForward,
 });
 
-// export const login = loginData => ({
-//     type: 'LOGIN_ASYNC',
-//     loginData,
-// });
+export const createPlayer = playerData => ({
+    type: 'CREATE_PLAYER_ASYNC',
+    playerData,
+});
