@@ -5,15 +5,14 @@ import {
     StepLabel,
 } from 'material-ui/Stepper';
 
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { updateStep, createPlayer } from './action-creators/player';
 import FirstStepForm from './_subviews/1-player-basic/element.jsx';
 import SecondStepForm from './_subviews/2-player-attributes/element.jsx';
 import ThirdStepForm from './_subviews/3-player-skills/element.jsx';
 
-export const PlayerCreator = ({ playerData, handleUpdateStep, handleCreatePlayer }) => {
-    const stepIndex = playerData.get('createStep') - 1;
+export const PlayerCreator = ({ initialValues, handleUpdateStep, handleCreatePlayer }) => {
+    const stepIndex = initialValues.get('createStep') - 1;
 
     return (<div style={{ width: '100%', maxWidth: 700, margin: 'auto' }} >
         <Stepper activeStep={stepIndex} >
@@ -31,15 +30,18 @@ export const PlayerCreator = ({ playerData, handleUpdateStep, handleCreatePlayer
         <div>
             {stepIndex === 0 &&
             <FirstStepForm
+                initialValues={initialValues}
                 onSubmit={() => handleUpdateStep(true)}
             />}
             {stepIndex === 1 &&
             <SecondStepForm
+                initialValues={initialValues}
                 previousPage={() => handleUpdateStep(false)}
                 onSubmit={() => handleUpdateStep(true)}
             />}
             {stepIndex === 2 &&
             <ThirdStepForm
+                initialValues={initialValues}
                 previousPage={() => handleUpdateStep(false)}
                 onSubmit={handleCreatePlayer}
             />}
@@ -50,7 +52,7 @@ export const PlayerCreator = ({ playerData, handleUpdateStep, handleCreatePlayer
 
 const mapStateToProps = state => (
     {
-        playerData: state.get('playerData'),
+        initialValues: state.get('playerData'),
     }
 );
 

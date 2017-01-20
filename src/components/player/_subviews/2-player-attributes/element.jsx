@@ -27,7 +27,7 @@ const PlayerAttributesForm = ({ handleSubmit, previousPage }) => {
                 id={`player-${attribute.name}-sld`}
                 label={attribute.label}
                 max={20}
-                min={1}
+                min={5}
                 step={1}
             />))}
 

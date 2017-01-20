@@ -31,8 +31,8 @@ const LoginForm = ({ handleSubmit, pristine, submitting, handleLogin }) =>
             />
             <Divider />
             <RaisedButton primary type="submit" disabled={pristine || submitting} >
-            Login
-        </RaisedButton >
+                Login
+            </RaisedButton >
         </form>
     </Paper>);
 

@@ -13,6 +13,7 @@ import reducers from './reducers';
 import sagas from './sagas';
 import middlewares from './middlewares';
 import rootRoute from './routes';
+import initialState from './initial-state';
 
 window.$ = $;
 
@@ -30,7 +31,7 @@ $(document).ajaxError((event, xhr) => {
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(combineReducers(Object.assign({}, reducers
-)), applyMiddleware(...middlewares, sagaMiddleware, routerMiddleware(hashHistory)));
+)), initialState, applyMiddleware(...middlewares, sagaMiddleware, routerMiddleware(hashHistory)));
 
 sagas.forEach(sagaMiddleware.run);
 
