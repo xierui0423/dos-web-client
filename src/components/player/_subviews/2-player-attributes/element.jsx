@@ -1,10 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
-import { Field, reduxForm } from 'redux-form/immutable';
+import { Field, reduxForm, formValueSelector } from 'redux-form/immutable';
 import Slider from '../../../ui/slider/slider.jsx';
-import validate from '../../validate';
+import { validate, attributesValidation} from '../../validate';
 
-const PlayerAttributesForm = ({ handleSubmit, previousPage }) => {
+const PlayerAttributesForm = ({ handleSubmit, previousPage, height, weight }) => {
     const attributes = [
         { name: 'speed', label: 'Speed' },
         { name: 'agility', label: 'Agility' },
@@ -26,9 +27,10 @@ const PlayerAttributesForm = ({ handleSubmit, previousPage }) => {
                 component={Slider}
                 id={`player-${attribute.name}-sld`}
                 label={attribute.label}
-                max={20}
+                max={attributesValidation(height, weight)[attribute.name]}
                 min={5}
                 step={1}
+                scale={20}
             />))}
 
             <div>
@@ -45,9 +47,14 @@ const PlayerAttributesForm = ({ handleSubmit, previousPage }) => {
     );
 };
 
-export default reduxForm({
+const selector = formValueSelector('player');
+
+export default connect(state => ({
+    height: selector(state, 'height'),
+    weight: selector(state, 'weight'),
+}))(reduxForm({
     form: 'player',                 // <------ same form name
     destroyOnUnmount: false,        // <------ preserve form data
     forceUnregisterOnUnmount: true,  // <------ unregister fields on unmount
     validate,
-})(PlayerAttributesForm);
+})(PlayerAttributesForm));

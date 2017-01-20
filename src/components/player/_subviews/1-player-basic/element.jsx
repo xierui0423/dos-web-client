@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form/immutable';
 import { TextField } from 'redux-form-material-ui';
 import Slider from '../../../ui/slider/slider.jsx';
-import validate from '../../validate';
+import { validate } from '../../validate';
 
 
 class PlayerBasicForm extends React.Component {

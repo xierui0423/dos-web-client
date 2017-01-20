@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import createSagaMiddleware from 'redux-saga';
 import $ from 'jquery';
@@ -30,8 +30,11 @@ $(document).ajaxError((event, xhr) => {
 
 const sagaMiddleware = createSagaMiddleware();
 
+// eslint-disable-next-line
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(combineReducers(Object.assign({}, reducers
-)), initialState, applyMiddleware(...middlewares, sagaMiddleware, routerMiddleware(hashHistory)));
+)), initialState, composeEnhancers(applyMiddleware(...middlewares, sagaMiddleware, routerMiddleware(hashHistory))));
 
 sagas.forEach(sagaMiddleware.run);
 
