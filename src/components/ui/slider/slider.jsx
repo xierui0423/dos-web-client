@@ -3,6 +3,7 @@ import { Slider } from 'redux-form-material-ui';
 
 class CustomSlider extends React.Component {
 
+    // TODO --still can enhance the slider faulty recovery? Since this triggers warning out of range
     componentWillMount() {
         // This makes the slider always in range even given an invalid value at the beginning
         const val = this.props.input.value || 0;

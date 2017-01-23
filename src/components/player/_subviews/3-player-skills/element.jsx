@@ -2,7 +2,7 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Field, reduxForm } from 'redux-form/immutable';
 import { TextField } from 'redux-form-material-ui';
-import { validate } from '../../validate';
+import validate from './validate';
 
 const PlayerSkillsForm = ({ handleSubmit, previousPage }) => (
     <form onSubmit={handleSubmit} >
