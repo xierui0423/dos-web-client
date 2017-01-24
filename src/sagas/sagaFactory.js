@@ -11,15 +11,17 @@ export default (sagaReducerName, url, method, actionDataField,
         dataType: 'json',
         data,
         xhrFields: {
-            withCredentials: true,
+            withCredentials,
         },
     }).then(response => response);
 
     const flowController = function* (action) {
         try {
+            const data = yield call(apiInvoker, dataParser && dataParser(action));
             yield put({
                 type: `${sagaReducerName}_ASYNC_SUCCEED`,
-                [actionDataField]: yield call(apiInvoker, dataParser && dataParser(action)),
+                [actionDataField]: data.payload,
+                message: data.message,
                 resolveTimestamp: action.meta.timestamp,
                 duration: succeedDuration,
             });

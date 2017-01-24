@@ -6,6 +6,7 @@ export default Immutable.fromJS(
         loadingMessages: [],
         navigation: { open: true, disabledUrls: [] },
         playerData: {
+            retrieved: false,
             createStep: 1,
             height: 170,
             weight: 70,

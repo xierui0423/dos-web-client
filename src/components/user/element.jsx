@@ -14,15 +14,16 @@ class UserPanel extends React.Component {
     }
 
     render() {
-        return (this.props.userData.get('id') ?
+        const { userData, handleLogout } = this.props;
+        return (userData.get('id') ?
             <div>
-                <div>Signed in as: {this.props.userData.get('username')}</div>
+                <div>Signed in as: {userData.get('username')}</div>
                 <RaisedButton
                     primary type="button"
-                    onClick={() => this.props.handleLogout()}
+                    onClick={() => handleLogout()}
                 >
-                            Logout
-                        </RaisedButton>
+                    Logout
+                </RaisedButton>
             </div>
             : null);
     }

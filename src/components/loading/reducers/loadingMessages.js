@@ -15,21 +15,21 @@ export default (state = InitialState.get('loadingMessages'), action) => {
     // Error   - -1
     if (action.type.match(/_ASYNC$/ig)) {
         loadingMessages.push({
-            loading: 0,
+            status: 0,
             message: action.message || 'Is Loading......',
             timestamp: action.meta.timestamp,
         });
     } else if (action.type.match(/_ASYNC_SUCCEED$/ig)) {
         loadingMessages = loadingMessages.filter(msg => msg.timestamp !== action.resolveTimestamp);
         loadingMessages.push({
-            loading: 1,
+            status: 1,
             message: action.message || 'Loaded!',
             timestamp: action.meta.timestamp,
         });
     } else if (action.type.match(/_ASYNC_ERROR$/ig)) {
         loadingMessages = loadingMessages.filter(msg => msg.timestamp !== action.resolveTimestamp);
         loadingMessages.push({
-            loading: -1,
+            status: -1,
             message: (action.error && action.error.responseText) || action.error || 'Error Happened!',
             timestamp: action.meta.timestamp,
         });
