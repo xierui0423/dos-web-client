@@ -24,7 +24,7 @@ injectTapEventPlugin();
 $(document).ajaxError((event, xhr) => {
     // Redirect to login view on authentication failure
     if (xhr.status === 401) {
-        hashHistory.push('login');
+        hashHistory.push('/login');
     }
 });
 
@@ -33,8 +33,11 @@ const sagaMiddleware = createSagaMiddleware();
 // eslint-disable-next-line
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(combineReducers(Object.assign({}, reducers
-)), initialState, composeEnhancers(applyMiddleware(...middlewares, sagaMiddleware, routerMiddleware(hashHistory))));
+const store = createStore(combineReducers(Object.assign({}, reducers)),
+    initialState,
+    composeEnhancers(
+        applyMiddleware(...middlewares, sagaMiddleware, routerMiddleware(hashHistory)))
+);
 
 sagas.forEach(sagaMiddleware.run);
 

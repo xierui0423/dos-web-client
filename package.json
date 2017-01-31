@@ -63,6 +63,7 @@
     "react-router-redux": "^4.0.7",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
+    "redux-auth-wrapper": "^0.9.0",
     "redux-form": "^6.4.3",
     "redux-form-material-ui": "^4.1.2",
     "redux-immutable": "^3.0.9",
@@ -122,6 +123,10 @@
         0
       ],
       "class-methods-use-this": [
+        0
+      ]
+    ,
+      "new-cap": [
         0
       ]
     }

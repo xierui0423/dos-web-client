@@ -2,20 +2,20 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import { fetchUser, logout } from './action-creators/user';
+import { logout } from './action-creators/user';
 
 class UserPanel extends React.Component {
 
-    componentWillMount() {
-        // Retrieve the user data if it doesn't exist
-        if (!this.props.userData.get('id')) {
-            this.props.handleFetchUser();
-        }
-    }
+    // componentWillMount() {
+    //     // Retrieve the user data if it doesn't exist
+    //     if (!this.props.userData.get('id')) {
+    //         this.props.handleFetchUser();
+    //     }
+    // }
 
     render() {
         const { userData, handleLogout } = this.props;
-        return (userData.get('id') ?
+        return (
             <div>
                 <div>Signed in as: {userData.get('username')}</div>
                 <RaisedButton
@@ -24,14 +24,13 @@ class UserPanel extends React.Component {
                 >
                     Logout
                 </RaisedButton>
-            </div>
-            : null);
+            </div>);
     }
 }
 
 UserPanel.propTypes = {
     userData: ImmutablePropTypes.map,
-    handleFetchUser: React.PropTypes.func,
+    // handleFetchUser: React.PropTypes.func,
     handleLogout: React.PropTypes.func,
 };
 
@@ -44,7 +43,7 @@ const mapStateToProps = state => (
 const UserPanelContainer = connect(
     mapStateToProps,
     {
-        handleFetchUser: fetchUser,
+        // handleFetchUser: fetchUser,
         handleLogout: logout,
     }
 )(UserPanel);

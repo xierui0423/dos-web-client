@@ -2,7 +2,8 @@ import Immutable from 'immutable';
 
 export default Immutable.fromJS(
     {
-        userData: { id: '' },
+        match: {},
+        userData: {},
         loadingMessages: [],
         navigation: { open: true, disabledUrls: [] },
         playerData: {
