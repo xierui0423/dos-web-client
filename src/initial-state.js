@@ -2,6 +2,7 @@ import Immutable from 'immutable';
 
 export default Immutable.fromJS(
     {
+        initialLoaded: false,
         match: {},
         userData: {},
         loadingMessages: [],
