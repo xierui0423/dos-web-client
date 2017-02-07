@@ -5,11 +5,14 @@ import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { combineReducers } from 'redux-immutable';
+import reduceReducers from 'reduce-reducers';
+
 import createSagaMiddleware from 'redux-saga';
 import $ from 'jquery';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import reducers from './reducers';
+import globalReducer from './reducers/global';
 import sagas from './sagas';
 import middlewares from './middlewares';
 import rootRoute from './routes';
@@ -33,7 +36,8 @@ const sagaMiddleware = createSagaMiddleware();
 // eslint-disable-next-line
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(combineReducers(Object.assign({}, reducers)),
+const store = createStore(
+    reduceReducers(globalReducer, combineReducers(Object.assign({}, reducers))),
     initialState,
     composeEnhancers(
         applyMiddleware(...middlewares, sagaMiddleware, routerMiddleware(hashHistory)))

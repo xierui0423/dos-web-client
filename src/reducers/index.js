@@ -4,7 +4,7 @@ import navigation from '../components/navigation/reducers/navigation';
 import userData from '../components/user/reducers/userData';
 import playerData from '../components/player/reducers/playerData';
 import match from '../components/match/reducers/match';
-import initialLoaded from '../components/initial-load-reducer';
+import initialLoaded from './initial';
 import routing from './routing';
 
 export default {
