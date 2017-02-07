@@ -7,8 +7,8 @@ export default (state = InitialState.get('playerData'), action) => {
             return Immutable.fromJS(state.set('createStep',
                 state.get('createStep') + (action.isForward ? 1 : -1)));
         case 'FETCH_PLAYER_ASYNC_SUCCEED':
-            return Immutable.fromJS(action.playerData.id
-                ? action.playerData : InitialState.get('playerData')).set('retrieved', true);
+            return Immutable.fromJS(action.payload.playerData.id
+                ? action.payload.playerData : InitialState.get('playerData')).set('retrieved', true);
         case 'LOGOUT_ASYNC_SUCCEED':
             return Immutable.fromJS(InitialState.get('playerData'));
         default:

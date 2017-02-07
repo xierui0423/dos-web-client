@@ -14,8 +14,7 @@ function getUrlVars() {
     return vars;
 }
 
-export default (sagaReducerName, url, method, actionDataField,
-                dataParser, redirect, withCredentials = true,
+export default (sagaReducerName, url, method, dataParser, redirect, withCredentials = true,
                 succeedDuration = 0, errorDuration = 2000) => {
     const apiInvoker = data => $.ajax({
         url,
@@ -33,7 +32,7 @@ export default (sagaReducerName, url, method, actionDataField,
             const data = yield call(apiInvoker, dataParser && dataParser(action));
             yield put({
                 type: `${sagaReducerName}_ASYNC_SUCCEED`,
-                [actionDataField]: data.payload,
+                payload: data.payload,
                 message: data.message,
                 resolveTimestamp: action.meta.timestamp,
                 duration: succeedDuration,
