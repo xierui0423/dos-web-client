@@ -3,7 +3,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 import io from 'socket.io-client';
 // import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import { fetchMatch, createMatch, beginMatch, receiveRecord } from './action-creators/match';
+import {
+    fetchMatch,
+    createMatch,
+    beginMatch,
+    receiveRecord,
+} from './action-creators/match';
 
 class UserPanel extends React.Component {
 
@@ -18,9 +23,9 @@ class UserPanel extends React.Component {
         this.__createSocket();
     }
 
-    componentDidUpdate() {
-        this.__createSocket();
-    }
+    // componentDidUpdate() {
+    //     this.__createSocket();
+    // }
 
     componentWillUnmount() {
         if (this.socket) {
@@ -31,22 +36,27 @@ class UserPanel extends React.Component {
     __createSocket() {
         const { match, handleBeginMatch, handleReceiveRecord } = this.props;
 
-        // Check if there is an ongoing match
-        if (match.id && match.userIds.length === 2) {
-            // If the socket connection does't exist, establish it
+        // // Check if there is an ongoing match
+        // if (match.id && match.userIds.length === 2) {
+        //     // If the socket connection does't exist, establish it
 
+        if (match.id) {
             if (!this.socket) {
                 this.socket = io.connect('localhost:9999');
                 this.socket.on('connect', () => {
-                    handleBeginMatch();
-                    this.socket.emit('joinRoom', match.id);
+                    console.log('connected');
+                    this.socket.emit('join:room', match.id);
                 }).on('disconnect', () => {
                     console.log('disconnected');
-                }).on('receive', (msg) => {
+                }).on('join:room', () => {
+                    handleBeginMatch();
+                }).on('receive:message', (msg) => {
                     handleReceiveRecord(msg);
                 });
             }
         }
+
+        // }
     }
 
     __vote(vote) {
@@ -82,9 +92,9 @@ class UserPanel extends React.Component {
                         </RaisedButton >
 
                         {match.live.length > 0 ? <ul>
-                            {match.live.map((record, index) => (<li key={index}> {`${record.senderId}: ${record.message}`}</li>)
-
-                                )}
+                            {match.live.map((record, index) => (
+                                <li key={index} > {`${record.senderId}: ${record.message}`}</li>)
+                            )}
                         </ul> : null}
 
                     </div>
@@ -95,7 +105,10 @@ class UserPanel extends React.Component {
 
         return (
             <div> No matches are going.
-                <RaisedButton primary type="button" onClick={handleCreateMatch} >
+                <RaisedButton
+                    primary type="button"
+                    onClick={handleCreateMatch}
+                >
                     Create one
                 </RaisedButton >
             </div>

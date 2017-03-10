@@ -1,18 +1,6 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
 import { hashHistory } from 'react-router';
-
-// Read a page's GET URL variables and return them as an associative array.
-function getUrlVars() {
-    const vars = [];
-    let hash;
-    const hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    for (let i = 0; i < hashes.length; i += 1) {
-        hash = hashes[i].split('=');
-        vars.push(hash[0]);
-        vars[hash[0]] = decodeURIComponent(hash[1]);
-    }
-    return vars;
-}
+import Utils from '../utils/';
 
 export default (sagaReducerName, url, method, dataParser, redirect, withCredentials = true,
                 succeedDuration = 0, errorDuration = 2000) => {
@@ -38,7 +26,7 @@ export default (sagaReducerName, url, method, dataParser, redirect, withCredenti
                 duration: succeedDuration,
             });
 
-            const redirectUrl = getUrlVars().redirect || redirect;
+            const redirectUrl = Utils.getUrlVars().redirect || redirect;
 
             if (redirectUrl) {
                 hashHistory.push(redirectUrl);
