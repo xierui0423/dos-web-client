@@ -16,7 +16,7 @@ import globalReducer from './reducers/global';
 import sagas from './sagas';
 import middlewares from './middlewares';
 import rootRoute from './routes';
-import initialState from './initial-state';
+import initialState from './initialState';
 
 window.$ = $;
 

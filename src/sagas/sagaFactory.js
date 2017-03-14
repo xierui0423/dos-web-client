@@ -1,23 +1,15 @@
-import { takeEvery, call, put } from 'redux-saga/effects';
+import { takeEvery, call, put, fork } from 'redux-saga/effects';
 import { hashHistory } from 'react-router';
 import Utils from '../utils/';
 
-export default (sagaReducerName, url, method, dataParser, redirect, withCredentials = true,
-                succeedDuration = 0, errorDuration = 2000) => {
-    const apiInvoker = data => $.ajax({
-        url,
-        method,
-        contentType: 'application/json',
-        dataType: 'json',
-        data,
-        xhrFields: {
-            withCredentials,
-        },
-    }).then(response => response);
+const socketWatchers = [];
 
-    const flowController = function* (action) {
+export default (sagaReducerName, dataService, redirect,
+                succeedDuration = 0, errorDuration = 2000) => {
+    function* apiInvokerFlow(action) {
         try {
-            const data = yield call(apiInvoker, dataParser && dataParser(action));
+            const data = yield call(dataService.dataSource,
+                dataService.transformInvokingData && dataService.transformInvokingData(action));
             yield put({
                 type: `${sagaReducerName}_ASYNC_SUCCEED`,
                 payload: data.payload,
@@ -39,9 +31,36 @@ export default (sagaReducerName, url, method, dataParser, redirect, withCredenti
                 duration: errorDuration,
             });
         }
-    };
+    }
+
+    function* watchSocketMessages(action) {
+        yield call(dataService.dataSource.connect);
+        let data = yield call(dataService.dataSource.nextMessage);
+        while (data) {
+            yield put({
+                type: `${sagaReducerName}_ASYNC_SUCCEED`,
+                payload: data.payload,
+                message: data.message,
+                resolveTimestamp: action.meta.timestamp,
+                duration: succeedDuration,
+            });
+            data = yield call(dataService.dataSource.nextMessage);
+        }
+        // console.log('done receive messages');
+    }
+
+    function* socketListenerFlow(action) {
+        if (!socketWatchers.includes(sagaReducerName)) {
+            // const socketListener = yield call(dataService.dataSource);
+            yield fork(watchSocketMessages, action);
+            socketWatchers.push(sagaReducerName);
+        }
+
+        dataService.dataSource.pull(action);
+    }
 
     return function* () {
-        yield takeEvery(`${sagaReducerName}_ASYNC`, flowController);
+        yield takeEvery(`${sagaReducerName}_ASYNC`,
+            dataService.isSocketBased ? socketListenerFlow : apiInvokerFlow);
     };
 };

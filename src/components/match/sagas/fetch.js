@@ -1,5 +1,8 @@
 import sagaFactory from '../../../sagas/sagaFactory';
+import dataServices from '../../../data-services';
+import sockets from '../../../sockets';
 
-export default sagaFactory('FETCH_MATCH', 'http://localhost:3000/api/private/match/retrieve/',
-    'GET');
+const socketListener = dataServices.socketListener(sockets.gameSocket, 'fetch:match');
+
+export default sagaFactory('FETCH_MATCH', socketListener);
 

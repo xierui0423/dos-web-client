@@ -1,4 +1,9 @@
 import sagaFactory from '../../../sagas/sagaFactory';
+import dataServices from '../../../data-services';
 
-export default sagaFactory('LOGOUT', 'http://localhost:3000/api/private/account/user/logout/', 'POST', undefined, '/login');
+const apiInvoker = dataServices.apiInvoker(
+    'http://localhost:3000/api/private/account/user/logout/',
+    'POST');
+
+export default sagaFactory('LOGOUT', apiInvoker, '/login');
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import io from 'socket.io-client';
+
 // import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import {
@@ -16,6 +16,8 @@ class UserPanel extends React.Component {
         // Retrieve the user data if it doesn't exist
         if (!this.props.match.id) {
             this.props.handleFetchMatch();
+
+            setInterval(()=>{ this.props.handleFetchMatch();}, 3000);
         }
     }
 
@@ -40,21 +42,11 @@ class UserPanel extends React.Component {
         // if (match.id && match.userIds.length === 2) {
         //     // If the socket connection does't exist, establish it
 
-        if (match.id) {
-            if (!this.socket) {
-                this.socket = io.connect('localhost:9999');
-                this.socket.on('connect', () => {
-                    console.log('connected');
-                    this.socket.emit('join:room', match.id);
-                }).on('disconnect', () => {
-                    console.log('disconnected');
-                }).on('join:room', () => {
-                    handleBeginMatch();
-                }).on('receive:message', (msg) => {
-                    handleReceiveRecord(msg);
-                });
-            }
-        }
+        // if (match.id) {
+        //     if (!this.socket) {
+        //
+        //     }
+        // }
 
         // }
     }

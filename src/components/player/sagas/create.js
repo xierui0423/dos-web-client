@@ -1,6 +1,11 @@
 import sagaFactory from '../../../sagas/sagaFactory';
+import dataServices from '../../../data-services';
 
-export default sagaFactory('CREATE_PLAYER', 'http://localhost:3000/api/private/player/create/',
-    'POST', action => (JSON.stringify({
+const apiInvoker = dataServices.apiInvoker(
+    'http://localhost:3000/api/private/player/create/',
+    'POST',
+    action => (JSON.stringify({
         player: action.playerData.toJSON(),
-    })), '/player', true, 2000);
+    })));
+
+export default sagaFactory('CREATE_PLAYER', '/player', apiInvoker, 2000);
