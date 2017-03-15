@@ -4,21 +4,21 @@ import RaisedButton from 'material-ui/RaisedButton';
 // import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import {
-    fetchMatch,
-    createMatch,
-    beginMatch,
-    receiveRecord,
+    fetchMatchOnSocket,
+    fetchRecordOnSocket,
 } from './action-creators/match';
+
+import sockets from '../../sockets';
 
 class UserPanel extends React.Component {
 
     componentWillMount() {
-        // Retrieve the user data if it doesn't exist
-        if (!this.props.match.id) {
-            this.props.handleFetchMatch();
-
-            setInterval(()=>{ this.props.handleFetchMatch();}, 3000);
-        }
+        // // Retrieve the user data if it doesn't exist
+        // if (!this.props.match.id) {
+        //     this.props.handleFetchMatch();
+        //
+        //     // setInterval(()=>{ this.props.handleFetchMatch();}, 3000);
+        // }
     }
 
     componentDidMount() {
@@ -36,19 +36,15 @@ class UserPanel extends React.Component {
     }
 
     __createSocket() {
-        const { match, handleBeginMatch, handleReceiveRecord } = this.props;
+        const { match, handleFetchMatch, handleFetchRecord } = this.props;
 
-        // // Check if there is an ongoing match
-        // if (match.id && match.userIds.length === 2) {
-        //     // If the socket connection does't exist, establish it
-
-        // if (match.id) {
-        //     if (!this.socket) {
-        //
-        //     }
-        // }
-
-        // }
+        if (!this.socket) {
+            this.socket = sockets.gameSocket;
+            this.socket
+                .on('fetch:match', handleFetchMatch)
+                .on('fetch:record', handleFetchRecord);
+            this.socket.connect();
+        }
     }
 
     __vote(vote) {
@@ -59,13 +55,19 @@ class UserPanel extends React.Component {
         }
     }
 
+    __createMatch() {
+        if (this.socket) {
+            this.socket.emit('create:match');
+        }
+    }
+
     render() {
         const { match, handleCreateMatch } = this.props;
 
         if (match.id) {
             if (match.userIds.length === 1) {
                 return (<div> Still waiting for someone to join... </div>);
-            } else if (match.isMatchGoing) {
+            } else if (match.userIds.length === 2) {
                 return (
                     <div>
                         <RaisedButton
@@ -99,7 +101,7 @@ class UserPanel extends React.Component {
             <div> No matches are going.
                 <RaisedButton
                     primary type="button"
-                    onClick={handleCreateMatch}
+                    onClick={() => { this.__createMatch(); }}
                 >
                     Create one
                 </RaisedButton >
@@ -118,10 +120,9 @@ const mapStateToProps = state => (
 const UserPanelContainer = connect(
     mapStateToProps,
     {
-        handleFetchMatch: fetchMatch,
-        handleCreateMatch: createMatch,
-        handleBeginMatch: beginMatch,
-        handleReceiveRecord: receiveRecord,
+        handleFetchMatch: fetchMatchOnSocket,
+        handleFetchRecord: fetchRecordOnSocket,
+        // handleCreateMatch: createMatchThroughSocket,
     }
 )(UserPanel);
 

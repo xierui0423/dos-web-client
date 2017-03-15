@@ -1,17 +1,18 @@
-export const fetchMatch = () => ({
-    type: 'FETCH_MATCH_ASYNC',
+export const fetchMatchOnSocket = match => ({
+    type: 'FETCH_MATCH_SOCKET',
+    payload: { match },
 });
 
-export const createMatch = () => ({
-    type: 'CREATE_MATCH_ASYNC',
-});
+// export const createMatchThroughSocket = () => ({
+//     type: 'CREATE_MATCH_ASYNC',
+// });
 
-export const beginMatch = () => ({
-    type: 'BEGIN_MATCH',
-});
+// export const beginMatch = () => ({
+//     type: 'BEGIN_MATCH',
+// });
 
-export const receiveRecord = record => ({
-    type: 'RECEIVE_RECORD',
+export const fetchRecordOnSocket = record => ({
+    type: 'FETCH_RECORD_SOCKET',
     payload: { record },
 });
 
