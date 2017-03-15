@@ -1,26 +1,33 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import io from 'socket.io-client';
+
 // import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import { fetchMatch, createMatch, beginMatch, receiveRecord } from './action-creators/match';
+import {
+    fetchMatchOnSocket,
+    fetchRecordOnSocket,
+} from './action-creators/match';
+
+import sockets from '../../sockets';
 
 class UserPanel extends React.Component {
 
     componentWillMount() {
-        // Retrieve the user data if it doesn't exist
-        if (!this.props.match.id) {
-            this.props.handleFetchMatch();
-        }
+        // // Retrieve the user data if it doesn't exist
+        // if (!this.props.match.id) {
+        //     this.props.handleFetchMatch();
+        //
+        //     // setInterval(()=>{ this.props.handleFetchMatch();}, 3000);
+        // }
     }
 
     componentDidMount() {
         this.__createSocket();
     }
 
-    componentDidUpdate() {
-        this.__createSocket();
-    }
+    // componentDidUpdate() {
+    //     this.__createSocket();
+    // }
 
     componentWillUnmount() {
         if (this.socket) {
@@ -29,23 +36,14 @@ class UserPanel extends React.Component {
     }
 
     __createSocket() {
-        const { match, handleBeginMatch, handleReceiveRecord } = this.props;
+        const { match, handleFetchMatch, handleFetchRecord } = this.props;
 
-        // Check if there is an ongoing match
-        if (match.id && match.userIds.length === 2) {
-            // If the socket connection does't exist, establish it
-
-            if (!this.socket) {
-                this.socket = io.connect('localhost:9999');
-                this.socket.on('connect', () => {
-                    handleBeginMatch();
-                    this.socket.emit('joinRoom', match.id);
-                }).on('disconnect', () => {
-                    console.log('disconnected');
-                }).on('receive', (msg) => {
-                    handleReceiveRecord(msg);
-                });
-            }
+        if (!this.socket) {
+            this.socket = sockets.gameSocket;
+            this.socket
+                .on('fetch:match', handleFetchMatch)
+                .on('fetch:record', handleFetchRecord);
+            this.socket.connect();
         }
     }
 
@@ -57,13 +55,19 @@ class UserPanel extends React.Component {
         }
     }
 
+    __createMatch() {
+        if (this.socket) {
+            this.socket.emit('create:match');
+        }
+    }
+
     render() {
         const { match, handleCreateMatch } = this.props;
 
         if (match.id) {
             if (match.userIds.length === 1) {
                 return (<div> Still waiting for someone to join... </div>);
-            } else if (match.isMatchGoing) {
+            } else if (match.userIds.length === 2) {
                 return (
                     <div>
                         <RaisedButton
@@ -82,9 +86,9 @@ class UserPanel extends React.Component {
                         </RaisedButton >
 
                         {match.live.length > 0 ? <ul>
-                            {match.live.map((record, index) => (<li key={index}> {`${record.senderId}: ${record.message}`}</li>)
-
-                                )}
+                            {match.live.map((record, index) => (
+                                <li key={index} > {`${record.senderId}: ${record.message}`}</li>)
+                            )}
                         </ul> : null}
 
                     </div>
@@ -95,7 +99,10 @@ class UserPanel extends React.Component {
 
         return (
             <div> No matches are going.
-                <RaisedButton primary type="button" onClick={handleCreateMatch} >
+                <RaisedButton
+                    primary type="button"
+                    onClick={() => { this.__createMatch(); }}
+                >
                     Create one
                 </RaisedButton >
             </div>
@@ -113,10 +120,9 @@ const mapStateToProps = state => (
 const UserPanelContainer = connect(
     mapStateToProps,
     {
-        handleFetchMatch: fetchMatch,
-        handleCreateMatch: createMatch,
-        handleBeginMatch: beginMatch,
-        handleReceiveRecord: receiveRecord,
+        handleFetchMatch: fetchMatchOnSocket,
+        handleFetchRecord: fetchRecordOnSocket,
+        // handleCreateMatch: createMatchThroughSocket,
     }
 )(UserPanel);
 

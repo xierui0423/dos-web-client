@@ -1,35 +1,13 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
 import { hashHistory } from 'react-router';
+import Utils from '../utils/';
 
-// Read a page's GET URL variables and return them as an associative array.
-function getUrlVars() {
-    const vars = [];
-    let hash;
-    const hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    for (let i = 0; i < hashes.length; i += 1) {
-        hash = hashes[i].split('=');
-        vars.push(hash[0]);
-        vars[hash[0]] = decodeURIComponent(hash[1]);
-    }
-    return vars;
-}
-
-export default (sagaReducerName, url, method, dataParser, redirect, withCredentials = true,
+export default (sagaReducerName, dataService, redirect,
                 succeedDuration = 0, errorDuration = 2000) => {
-    const apiInvoker = data => $.ajax({
-        url,
-        method,
-        contentType: 'application/json',
-        dataType: 'json',
-        data,
-        xhrFields: {
-            withCredentials,
-        },
-    }).then(response => response);
-
-    const flowController = function* (action) {
+    function* apiInvokerFlow(action) {
         try {
-            const data = yield call(apiInvoker, dataParser && dataParser(action));
+            const data = yield call(dataService.dataSource,
+                dataService.transformInvokingData && dataService.transformInvokingData(action));
             yield put({
                 type: `${sagaReducerName}_ASYNC_SUCCEED`,
                 payload: data.payload,
@@ -38,7 +16,7 @@ export default (sagaReducerName, url, method, dataParser, redirect, withCredenti
                 duration: succeedDuration,
             });
 
-            const redirectUrl = getUrlVars().redirect || redirect;
+            const redirectUrl = Utils.getUrlVars().redirect || redirect;
 
             if (redirectUrl) {
                 hashHistory.push(redirectUrl);
@@ -51,9 +29,9 @@ export default (sagaReducerName, url, method, dataParser, redirect, withCredenti
                 duration: errorDuration,
             });
         }
-    };
+    }
 
     return function* () {
-        yield takeEvery(`${sagaReducerName}_ASYNC`, flowController);
+        yield takeEvery(`${sagaReducerName}_ASYNC`, apiInvokerFlow);
     };
 };

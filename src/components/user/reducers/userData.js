@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import InitialState from '../../../initial-state';
+import InitialState from '../../../initialState';
 
 export default (state = InitialState.get('userData'), action) => {
     switch (action.type) {

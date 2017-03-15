@@ -1,5 +1,9 @@
 import sagaFactory from '../../../sagas/sagaFactory';
+import dataServices from '../../../data-services';
 
-export default sagaFactory('CREATE_MATCH', 'http://localhost:3000/api/private/match/create/',
+const apiInvoker = dataServices.apiInvoker(
+    'http://localhost:3000/api/private/match/create/',
     'POST');
+
+export default sagaFactory('CREATE_MATCH', apiInvoker);
 
