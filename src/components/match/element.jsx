@@ -51,7 +51,7 @@ class UserPanel extends React.Component {
         const { match } = this.props;
 
         if (this.socket) {
-            this.socket.emit('send', { room: match.id, message: vote });
+            this.socket.emit('send:action', { room: match.id, message: vote });
         }
     }
 
