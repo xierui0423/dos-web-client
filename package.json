@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --require ./test/helper/test_helper.js \"test/**/*.@(js|jsx)\"",
     "test:watch": "npm run test -- --watch --watch-extensions jsx",
+    "lint": "eslint --ext .jsx,.js --fix src",
     "build": "webpack",
     "start": "webpack-dev-server"
   },
@@ -83,18 +84,14 @@
     "extends": [
       "airbnb"
     ],
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
     "rules": {
-      "indent": [
-        2,
-        4,
-        {
-          "SwitchCase": 1
-        }
-      ],
-      "react/jsx-indent": [
-        2,
-        4
-      ],
       "new-cap": [
         0
       ],
@@ -122,6 +119,9 @@
         0
       ],
       "no-underscore-dangle": [
+        0
+      ],
+      "no-console": [
         0
       ]
     }

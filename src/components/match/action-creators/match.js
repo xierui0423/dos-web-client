@@ -1,6 +1,6 @@
 export const fetchMatchOnSocket = match => ({
-    type: 'FETCH_MATCH_SOCKET',
-    payload: { match },
+  type: 'FETCH_MATCH_SOCKET',
+  payload: { match },
 });
 
 // export const createMatchThroughSocket = () => ({
@@ -12,7 +12,7 @@ export const fetchMatchOnSocket = match => ({
 // });
 
 export const fetchRecordOnSocket = record => ({
-    type: 'FETCH_RECORD_SOCKET',
-    payload: { record },
+  type: 'FETCH_RECORD_SOCKET',
+  payload: { record },
 });
 

@@ -9,29 +9,29 @@ import config from '../config';
 
 class Main extends React.Component {
 
-    componentWillMount() {
+  componentWillMount() {
         // Retrieve the user data if it doesn't exist
-        if (!this.props.initialLoaded) {
-            this.props.handleFetchUser();
-        }
+    if (!this.props.initialLoaded) {
+      this.props.handleFetchUser();
     }
+  }
 
-    render() {
-        const { children, initialLoaded } = this.props;
+  render() {
+    const { children, initialLoaded } = this.props;
 
-        return initialLoaded ? (
-            <MuiThemeProvider>
-                <div className="main-wrapper">
-                    <LoadingModalContainer />
-                    <NavigationContainer
-                        navigationItems={Immutable.fromJS(config.navigationItems)}
-                    />
-                    <div className="content" style={{ marginRight: '256px' }}>
-                        {children}
-                    </div>
-                </div>
-            </MuiThemeProvider>) : null;
-    }
+    return initialLoaded ? (
+      <MuiThemeProvider>
+        <div className="main-wrapper">
+          <LoadingModalContainer />
+          <NavigationContainer
+              navigationItems={Immutable.fromJS(config.navigationItems)}
+          />
+          <div className="content" style={{ marginRight: '256px' }}>
+            {children}
+          </div>
+        </div>
+      </MuiThemeProvider>) : null;
+  }
 }
 
 
@@ -41,14 +41,14 @@ Main.propTypes = {
 };
 
 const mapStateToProps = state => (
-    {
+  {
         // initialValues: state.get('playerData'),
-        initialLoaded: state.get('initialLoaded'),
-    }
+    initialLoaded: state.get('initialLoaded'),
+  }
 );
 
 const MainContainer = connect(mapStateToProps, {
-    handleFetchUser: fetchUser,
+  handleFetchUser: fetchUser,
 })(Main);
 
 export default MainContainer;

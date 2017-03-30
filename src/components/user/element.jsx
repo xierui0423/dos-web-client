@@ -6,46 +6,46 @@ import { logout } from './action-creators/user';
 
 class UserPanel extends React.Component {
 
-    // componentWillMount() {
-    //     // Retrieve the user data if it doesn't exist
-    //     if (!this.props.userData.get('id')) {
-    //         this.props.handleFetchUser();
-    //     }
-    // }
+  componentWillMount() {
+        // // Retrieve the user data if it doesn't exist
+        // if (!this.props.userData.get('id')) {
+        //     this.props.handleFetchUser();
+        // }
+  }
 
-    render() {
-        const { userData, handleLogout } = this.props;
-        return (
-            <div>
-                <div>Signed in as: {userData.get('username')}</div>
-                <RaisedButton
-                    primary type="button"
-                    onClick={() => handleLogout()}
-                >
+  render() {
+    const { userData, handleLogout } = this.props;
+    return (
+      <div>
+        <div>Signed in as: {userData.get('username')}</div>
+        <RaisedButton
+            primary type="button"
+            onClick={() => handleLogout()}
+        >
                     Logout
                 </RaisedButton>
-            </div>);
-    }
+      </div>);
+  }
 }
 
 UserPanel.propTypes = {
-    userData: ImmutablePropTypes.map,
+  userData: ImmutablePropTypes.map,
     // handleFetchUser: React.PropTypes.func,
-    handleLogout: React.PropTypes.func,
+  handleLogout: React.PropTypes.func,
 };
 
 const mapStateToProps = state => (
-    {
-        userData: state.get('userData'),
-    }
+  {
+    userData: state.get('userData'),
+  }
 );
 
 const UserPanelContainer = connect(
     mapStateToProps,
-    {
+  {
         // handleFetchUser: fetchUser,
-        handleLogout: logout,
-    }
+    handleLogout: logout,
+  }
 )(UserPanel);
 
 export default UserPanelContainer;

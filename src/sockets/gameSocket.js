@@ -9,25 +9,25 @@ socket.on('connect', () => {
     // console.log('connected');
     // socket.emit('join:room', match.id);
 }).on('disconnect', () => {
-    console.log('disconnected');
+  console.log('disconnected');
 }).on('join:room', () => {
     // handleBeginMatch();
-}).on('receive:message', (msg) => {
+}).on('receive:message', () => {
     // handleReceiveRecord(msg);
 });
 
 
 socket.connectPromise = new Promise((resolve, reject) => {
-    socket.on('connect', (connectedSocket) => {
+  socket.on('connect', (connectedSocket) => {
         // console.log('connected!!!!!!!!')
-        resolve(connectedSocket);
-    });
-    socket.on('connect_error', () => {
-        reject(new Error('connect_error'));
-    });
-    socket.on('connect_timeout', () => {
-        reject(new Error('connect_timeout'));
-    });
+    resolve(connectedSocket);
+  });
+  socket.on('connect_error', () => {
+    reject(new Error('connect_error'));
+  });
+  socket.on('connect_timeout', () => {
+    reject(new Error('connect_timeout'));
+  });
 
     // socket.connect();
 });

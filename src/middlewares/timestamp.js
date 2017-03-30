@@ -1,10 +1,9 @@
-export default () => next => (action) => {
+export default () => next => action =>
     // Timestamp the action
-    return next(
+     next(
         Object.assign(action,
-            {
-                meta: Object.assign({}, action.meta, { timestamp: new Date().getTime() }),
-            }
+          {
+            meta: Object.assign({}, action.meta, { timestamp: new Date().getTime() }),
+          }
         )
     );
-};

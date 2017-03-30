@@ -26,9 +26,9 @@ injectTapEventPlugin();
 
 $(document).ajaxError((event, xhr) => {
     // Redirect to login view on authentication failure
-    if (xhr.status === 401) {
-        hashHistory.push('/login');
-    }
+  if (xhr.status === 401) {
+    hashHistory.push('/login');
+  }
 });
 
 const sagaMiddleware = createSagaMiddleware();
@@ -47,15 +47,15 @@ sagas.forEach(sagaMiddleware.run);
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(hashHistory, store, {
-    selectLocationState(state) {
-        return state.get('routing').toObject();
-    },
+  selectLocationState(state) {
+    return state.get('routing').toObject();
+  },
 });
 
 ReactDOM.render(
-    <Provider store={store} >
-        <Router history={history} >{rootRoute}</Router>
-    </Provider>,
+  <Provider store={store} >
+    <Router history={history} >{rootRoute}</Router>
+  </Provider>,
     document.getElementById('app')
 );
 

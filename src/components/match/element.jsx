@@ -12,118 +12,118 @@ import sockets from '../../sockets';
 
 class UserPanel extends React.Component {
 
-    componentWillMount() {
+  componentWillMount() {
         // // Retrieve the user data if it doesn't exist
         // if (!this.props.match.id) {
         //     this.props.handleFetchMatch();
         //
         //     // setInterval(()=>{ this.props.handleFetchMatch();}, 3000);
         // }
-    }
+  }
 
-    componentDidMount() {
-        this.__createSocket();
-    }
+  componentDidMount() {
+    this.__createSocket();
+  }
 
     // componentDidUpdate() {
     //     this.__createSocket();
     // }
 
-    componentWillUnmount() {
-        if (this.socket) {
-            this.socket.disconnect();
-        }
+  componentWillUnmount() {
+    if (this.socket) {
+      this.socket.disconnect();
     }
+  }
 
-    __createSocket() {
-        const { match, handleFetchMatch, handleFetchRecord } = this.props;
+  __createSocket() {
+    const { handleFetchMatch, handleFetchRecord } = this.props;
 
-        if (!this.socket) {
-            this.socket = sockets.gameSocket;
-            this.socket
+    if (!this.socket) {
+      this.socket = sockets.gameSocket;
+      this.socket
                 .on('fetch:match', handleFetchMatch)
                 .on('fetch:record', handleFetchRecord);
-            this.socket.connect();
-        }
+      this.socket.connect();
     }
+  }
 
-    __vote(vote) {
-        const { match } = this.props;
+  __vote(vote) {
+    const { match } = this.props;
 
-        if (this.socket) {
-            this.socket.emit('send:action', { room: match.id, message: vote });
-        }
+    if (this.socket) {
+      this.socket.emit('send:action', { room: match.id, message: vote });
     }
+  }
 
-    __createMatch() {
-        if (this.socket) {
-            this.socket.emit('create:match');
-        }
+  __createMatch() {
+    if (this.socket) {
+      this.socket.emit('create:match');
     }
+  }
 
-    render() {
-        const { match, handleCreateMatch } = this.props;
+  render() {
+    const { match } = this.props;
 
-        if (match.id) {
-            if (match.userIds.length === 1) {
-                return (<div> Still waiting for someone to join... </div>);
-            } else if (match.userIds.length === 2) {
-                return (
-                    <div>
-                        <RaisedButton
-                            primary type="button" onClick={() => {
-                                this.__vote('ATTACK');
-                            }}
-                        >
+    if (match.id) {
+      if (match.userIds.length === 1) {
+        return (<div> Still waiting for someone to join... </div>);
+      } else if (match.userIds.length === 2) {
+        return (
+          <div>
+            <RaisedButton
+                primary type="button" onClick={() => {
+                  this.__vote('ATTACK');
+                }}
+            >
                             Attack
                         </RaisedButton >
-                        <RaisedButton
-                            primary type="button" onClick={() => {
-                                this.__vote('DEFEND');
-                            }}
-                        >
+            <RaisedButton
+                primary type="button" onClick={() => {
+                  this.__vote('DEFEND');
+                }}
+            >
                             Defend
                         </RaisedButton >
 
-                        {match.live.length > 0 ? <ul>
-                            {match.live.map((record, index) => (
-                                <li key={index} > {`${record.senderId}: ${record.message}`}</li>)
+            {match.live.length > 0 ? <ul>
+              {match.live.map((record, index) => (
+                <li key={index} > {`${record.senderId}: ${record.message}`}</li>)
                             )}
-                        </ul> : null}
+            </ul> : null}
 
-                    </div>
-                );
-            }
-            return (<div> Match: {match.id} </div>);
-        }
+          </div>
+        );
+      }
+      return (<div> Match: {match.id} </div>);
+    }
 
-        return (
-            <div> No matches are going.
+    return (
+      <div> No matches are going.
                 <RaisedButton
                     primary type="button"
                     onClick={() => { this.__createMatch(); }}
                 >
                     Create one
                 </RaisedButton >
-            </div>
-        );
-    }
+      </div>
+    );
+  }
 }
 
 
 const mapStateToProps = state => (
-    {
-        match: state.get('match').toJSON(),
-    }
+  {
+    match: state.get('match').toJSON(),
+  }
 );
 
 const UserPanelContainer = connect(
     mapStateToProps,
-    {
-        handleFetchMatch: fetchMatchOnSocket,
-        handleFetchRecord: fetchRecordOnSocket,
+  {
+    handleFetchMatch: fetchMatchOnSocket,
+    handleFetchRecord: fetchRecordOnSocket,
         // handleCreateMatch: createMatchThroughSocket,
-    }
+  }
 )(UserPanel);
 
 export default UserPanelContainer;

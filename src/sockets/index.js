@@ -1,5 +1,5 @@
 import gameSocket from './gameSocket';
 
 export default {
-    gameSocket,
+  gameSocket,
 };

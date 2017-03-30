@@ -8,12 +8,12 @@ import initialLoaded from './initial';
 import routing from './routing';
 
 export default {
-    loadingMessages,
-    navigation,
-    userData,
-    playerData,
-    routing,
-    match,
-    initialLoaded,
-    form,
+  loadingMessages,
+  navigation,
+  userData,
+  playerData,
+  routing,
+  match,
+  initialLoaded,
+  form,
 };

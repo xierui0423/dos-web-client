@@ -1,12 +1,12 @@
 import validator from 'validator';
 
 export default (vals) => {
-    const errors = {};
-    const values = vals.toJSON();
+  const errors = {};
+  const values = vals.toJSON();
 
-    if (!values.skills || !validator.isAlpha(values.skills)) {
-        errors.skills = 'Required';
-    }
+  if (!values.skills || !validator.isAlpha(values.skills)) {
+    errors.skills = 'Required';
+  }
 
-    return errors;
+  return errors;
 };
