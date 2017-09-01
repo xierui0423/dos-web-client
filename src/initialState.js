@@ -3,9 +3,6 @@ import Immutable from 'immutable';
 export default Immutable.fromJS(
   {
     initialLoaded: false,
-    match: {
-      live: [],
-    },
     userData: {},
     loadingMessages: [],
     navigation: { open: true, disabledUrls: [] },
