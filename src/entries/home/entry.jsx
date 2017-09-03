@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, hashHistory } from 'react-router';
-import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
+import { ConnectedRouter, routerMiddleware, push } from 'react-router-redux';
+import createHistory from 'history/createHashHistory';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { combineReducers } from 'redux-immutable';
@@ -11,12 +11,12 @@ import createSagaMiddleware from 'redux-saga';
 import $ from 'jquery';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import reducers from './reducers';
-import globalReducer from './reducers/global';
-import sagas from './sagas';
-import middlewares from './middlewares';
-import rootRoute from './routes';
-import initialState from './initialState';
+import reducers from '../../reducers';
+import globalReducer from '../../reducers/global';
+import sagas from '../../sagas';
+import middlewares from '../../middlewares';
+import rootRoute from '../../routes';
+import initialState from '../../initialState';
 
 window.$ = $;
 
@@ -24,10 +24,13 @@ window.$ = $;
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
+// Create a history of your choosing (we're using a browser history in this case)
+const history = createHistory();
+
 $(document).ajaxError((event, xhr) => {
-    // Redirect to login view on authentication failure
+  // Redirect to login view on authentication failure
   if (xhr.status === 401) {
-    hashHistory.push('/login');
+    push('/login');
   }
 });
 
@@ -37,26 +40,19 @@ const sagaMiddleware = createSagaMiddleware();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
-    reduceReducers(globalReducer, combineReducers(Object.assign({}, reducers))),
-    initialState,
-    composeEnhancers(
-        applyMiddleware(...middlewares, sagaMiddleware, routerMiddleware(hashHistory)))
+  reduceReducers(globalReducer, combineReducers(Object.assign({}, reducers))),
+  initialState,
+  composeEnhancers(
+    applyMiddleware(...middlewares, sagaMiddleware, routerMiddleware(history))),
 );
 
 sagas.forEach(sagaMiddleware.run);
 
-// Create an enhanced history that syncs navigation events with the store
-const history = syncHistoryWithStore(hashHistory, store, {
-  selectLocationState(state) {
-    return state.get('routing').toObject();
-  },
-});
-
 ReactDOM.render(
   <Provider store={store} >
-    <Router history={history} >{rootRoute}</Router>
+    <ConnectedRouter history={history} >{rootRoute}</ConnectedRouter >
   </Provider>,
-    document.getElementById('app')
+  document.getElementById('app'),
 );
 
 // // Enable Webpack hot module replacement for reducers

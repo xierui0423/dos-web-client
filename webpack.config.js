@@ -1,36 +1,11 @@
-// eslint-disable-next-line
-const webpack = require('webpack');
+module.exports = function (env) {
+  // Use this array to control which entries will be compiled
+  // (leave it empty to compile all entries);
+  const compileEntries = [
+  //  'chunk-demo-1',
+  //   'static-html-demo',
+  ];
 
-module.exports = {
-  entry: [
-    'babel-polyfill',
-    'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/dev-server',
-    './src/index.jsx'],
-
-  module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loaders: ['babel'],
-    }],
-  },
-  output: {
-    path: `${__dirname}/dist`,
-    publicPath: '/',
-    filename: 'bundle.js',
-  },
-
-  devServer: {
-    contentBase: './dist',
-    hot: true,
-  },
-
-  debug: true,
-  devtool: 'source-map',
-
-
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-  ],
+  //eslint-disable-next-line
+  return require(`./webpack.${env}.js`)(env, compileEntries);
 };

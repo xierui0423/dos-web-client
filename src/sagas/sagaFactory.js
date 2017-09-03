@@ -1,5 +1,5 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
-import { hashHistory } from 'react-router';
+import { push } from 'react-router-redux';
 import Utils from '../utils/';
 
 export default (sagaReducerName, dataService, redirect,
@@ -19,7 +19,7 @@ export default (sagaReducerName, dataService, redirect,
       const redirectUrl = Utils.getUrlVars().redirect || redirect;
 
       if (redirectUrl) {
-        hashHistory.push(redirectUrl);
+        yield put(push(redirectUrl));
       }
     } catch (err) {
       yield put({

@@ -1,5 +1,6 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
@@ -7,14 +8,14 @@ export const LoadingModal = ({ loadingMessages }) => {
   let title = '';
 
   const overallStatus = loadingMessages.map(message => message.get('status'))
-        .reduce((pre, next) => {
-          if (pre === -1 || next === -1) {
-            return -1;
-          } else if (pre === 0 || next === 0) {
-            return 0;
-          }
-          return 1;
-        }, 1);
+    .reduce((pre, next) => {
+      if (pre === -1 || next === -1) {
+        return -1;
+      } else if (pre === 0 || next === 0) {
+        return 0;
+      }
+      return 1;
+    }, 1);
 
   switch (overallStatus) {
     case -1:
@@ -28,15 +29,17 @@ export const LoadingModal = ({ loadingMessages }) => {
   }
 
   return (loadingMessages.size ?
-    <Dialog open title={title} >
-      {loadingMessages.map((message, index) => <div
-          key={index}
-      >{message.get('message')}</div>)}
+    <Dialog open title={title}>
+      <List>
+        {loadingMessages.valueSeq().map(message => (<ListItem
+          key={message.get('timestamp')}
+        > <ListItemText primary={message.get('message')} /></ListItem >))}
+      </List>
     </Dialog> : null);
 };
 
 LoadingModal.propTypes = {
-  loadingMessages: ImmutablePropTypes.list,
+  loadingMessages: ImmutablePropTypes.list.isRequired,
 };
 
 const mapStateToProps = state => (
@@ -46,7 +49,7 @@ const mapStateToProps = state => (
 );
 
 const LoadingModalContainer = connect(
-    mapStateToProps
+  mapStateToProps,
 )(LoadingModal);
 
 export default LoadingModalContainer;

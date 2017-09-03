@@ -4,6 +4,6 @@ export default () => next => action =>
         Object.assign(action,
           {
             meta: Object.assign({}, action.meta, { timestamp: new Date().getTime() }),
-          }
-        )
+          },
+        ),
     );

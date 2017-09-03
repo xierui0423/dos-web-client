@@ -1,49 +1,50 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
+import { MenuItem } from 'material-ui/Menu';
+import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 
-export const Navigation = ({ navigate, navigation, navigationItems, routing }) =>
-    (<Drawer open={navigation.get('open')} openSecondary >
+export const Navigation = ({ navigate, navigation, navigationItems, location }) =>
+    (<Drawer open={navigation.get('open')} anchor="right" type="permanent" >
       {
             navigationItems.map(
-                (item, index) => {
+                (item) => {
                   const url = item.get('urls').get(0);
-                  const checked = item.get('urls').contains(routing.get('locationBeforeTransitions').pathname);
+                  const selected = item.get('urls').contains(location.pathname);
 
                   return (<MenuItem
-                      key={index}
-                      checked={checked}
-                      onClick={() => {
-                        navigate(url);
-                      }}
+                    key={url}
+                    selected={selected}
+                    onClick={() => {
+                      navigate(url);
+                    }}
                   >
                     {item.get('name')}
                   </MenuItem>);
-                }
+                },
             )
         }
     </Drawer>);
 
 Navigation.propTypes = {
-  navigate: React.PropTypes.func,
-  navigationItems: ImmutablePropTypes.list,
-  navigation: ImmutablePropTypes.map,
-  routing: ImmutablePropTypes.map,
+  location: PropTypes.object.isRequired,
+  navigate: PropTypes.func.isRequired,
+  navigationItems: ImmutablePropTypes.list.isRequired,
+  navigation: ImmutablePropTypes.map.isRequired,
 };
 
 const mapStateToProps = state => ({
   navigation: state.get('navigation'),
-  routing: state.get('routing'),
 });
 
 const NavigationContainer = connect(
     mapStateToProps,
   {
     navigate: push,
-  }
-)(Navigation);
+  },
+)(withRouter(Navigation));
 
 export default NavigationContainer;

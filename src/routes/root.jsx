@@ -1,12 +1,10 @@
 import React from 'react';
-import { Route } from 'react-router';
+import { Route } from 'react-router-dom';
 import { UserAuthWrapper } from 'redux-auth-wrapper';
 import { routerActions } from 'react-router-redux';
-import MainContainer from '../components/main-layout.jsx';
-import LoginFormContainer from '../components/login/element.jsx';
-import UserPanelContainer from '../components/user/element.jsx';
-import PlayerContainer from '../components/player/element.jsx';
-import MatchContainer from '../components/match/element.jsx';
+import MainContainer from '../components/layout/element';
+import LoginFormContainer from '../components/login/element';
+import UserPanelContainer from '../components/user/element';
 
 // Redirects to /login by default
 const UserIsAuthenticated = UserAuthWrapper({
@@ -15,14 +13,15 @@ const UserIsAuthenticated = UserAuthWrapper({
   wrapperDisplayName: 'UserIsAuthenticated', // a nice name for this auth check
 });
 
-const routes = (<Route component={MainContainer} >
+const MainContainerWrapper = () => (<MainContainer>
   <Route path="/login" component={LoginFormContainer} />
   {
-        ['/', '/user'].map((path, index) => (
-          <Route key={index} path={path} component={UserIsAuthenticated(UserPanelContainer)} />))
-    }
-  < Route path="/player" component={UserIsAuthenticated(PlayerContainer)} />
-  < Route path="/match" component={UserIsAuthenticated(MatchContainer)} />
-</Route>);
+    ['/', '/user'].map(path => (
+      <Route key={path} exact path={path} component={UserIsAuthenticated(UserPanelContainer)} />))
+  }</MainContainer>);
+
+
+const routes = (<Route component={MainContainerWrapper} />);
+
 
 export default routes;

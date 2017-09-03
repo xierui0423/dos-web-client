@@ -1,3 +1,3 @@
-import root from './root.jsx';
+import root from './root';
 
 export default root;
