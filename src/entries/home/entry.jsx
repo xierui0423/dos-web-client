@@ -27,13 +27,6 @@ injectTapEventPlugin();
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
 
-$(document).ajaxError((event, xhr) => {
-  // Redirect to login view on authentication failure
-  if (xhr.status === 401) {
-    push('/login');
-  }
-});
-
 const sagaMiddleware = createSagaMiddleware();
 
 // eslint-disable-next-line
@@ -45,6 +38,13 @@ const store = createStore(
   composeEnhancers(
     applyMiddleware(...middlewares, sagaMiddleware, routerMiddleware(history))),
 );
+
+// $(document).ajaxError((event, xhr) => {
+//   // Redirect to login view on authentication failure
+//   if (xhr.status === 401) {
+//     store.dispatch(push('/login'));
+//   }
+// });
 
 sagas.forEach(sagaMiddleware.run);
 

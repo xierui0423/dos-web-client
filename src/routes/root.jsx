@@ -11,6 +11,7 @@ const UserIsAuthenticated = UserAuthWrapper({
   authSelector: state => state.get('userData').toJSON(), // how to get the user state
   redirectAction: routerActions.replace, // the redux action to dispatch for redirect
   wrapperDisplayName: 'UserIsAuthenticated', // a nice name for this auth check
+  failureRedirectPath: '/login',
 });
 
 const MainContainerWrapper = () => (<MainContainer>
