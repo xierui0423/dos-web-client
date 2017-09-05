@@ -1,4 +1,4 @@
-import apiInvoker from './apiInvoker';
+import apiInvoker from './api-invoker';
 
 export default {
   apiInvoker,

@@ -16,7 +16,7 @@ import globalReducer from '../../reducers/global';
 import sagas from '../../sagas';
 import middlewares from '../../middlewares';
 import rootRoute from '../../routes';
-import initialState from '../../initialState';
+import initialState from '../../initial-state';
 
 window.$ = $;
 
@@ -39,12 +39,12 @@ const store = createStore(
     applyMiddleware(...middlewares, sagaMiddleware, routerMiddleware(history))),
 );
 
-// $(document).ajaxError((event, xhr) => {
-//   // Redirect to login view on authentication failure
-//   if (xhr.status === 401) {
-//     store.dispatch(push('/login'));
-//   }
-// });
+$(document).ajaxError((event, xhr) => {
+  // Redirect to login view on authentication failure
+  if (xhr.status === 401) {
+    store.dispatch(push('/login'));
+  }
+});
 
 sagas.forEach(sagaMiddleware.run);
 

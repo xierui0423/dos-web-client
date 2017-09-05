@@ -1,9 +1,11 @@
+import config from '../config';
+
 export default
 
 (url, method, transformInvokingData) => ({
   dataSource: data =>
         $.ajax({
-          url,
+          url: config.webServer.apiRoot + url,
           method,
           contentType: 'application/json',
           dataType: 'json',
