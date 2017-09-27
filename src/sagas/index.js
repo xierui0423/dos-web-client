@@ -1,5 +1,5 @@
 import loginSaga from '../components/login/sagas/login';
-import fetchUserSaga from '../components/user/sagas/fetch';
+// import fetchUserSaga from '../components/user/sagas/fetch';
 import logoutSaga from '../components/user/sagas/logout';
 
 
@@ -7,7 +7,7 @@ import clearLoadingMessageSaga from '../components/loading/sagas/clear-loading-m
 
 export default [
   loginSaga,
-  fetchUserSaga,
+  // fetchUserSaga,
   logoutSaga,
   clearLoadingMessageSaga,
 ];

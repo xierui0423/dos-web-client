@@ -1,18 +1,20 @@
+import 'rxjs';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ConnectedRouter, routerMiddleware, push } from 'react-router-redux';
 import createHistory from 'history/createHashHistory';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
-import { combineReducers } from 'redux-immutable';
-import reduceReducers from 'reduce-reducers';
+
 
 import createSagaMiddleware from 'redux-saga';
 import $ from 'jquery';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import { createEpicMiddleware } from 'redux-observable';
+import { fetchUserEpic } from '../../components/user/reducers/user-data';
 
 import reducers from '../../reducers';
-import globalReducer from '../../reducers/global';
 import sagas from '../../sagas';
 import middlewares from '../../middlewares';
 import rootRoute from '../../routes';
@@ -29,14 +31,16 @@ const history = createHistory();
 
 const sagaMiddleware = createSagaMiddleware();
 
+const epicMiddleware = createEpicMiddleware(fetchUserEpic);
+
 // eslint-disable-next-line
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
-  reduceReducers(globalReducer, combineReducers(Object.assign({}, reducers))),
+  reducers,
   initialState,
   composeEnhancers(
-    applyMiddleware(...middlewares, sagaMiddleware, routerMiddleware(history))),
+    applyMiddleware(...middlewares, sagaMiddleware, epicMiddleware, routerMiddleware(history))),
 );
 
 $(document).ajaxError((event, xhr) => {
