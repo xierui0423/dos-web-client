@@ -10,7 +10,8 @@ module.exports = {
   },
 
   globals: {
-    "$": true
+    "$": true,
+    "Rx": true
   },
 
   extends: [

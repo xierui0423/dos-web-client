@@ -1,4 +1,4 @@
-import 'rxjs';
+import Rx from 'rxjs';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -12,7 +12,7 @@ import createSagaMiddleware from 'redux-saga';
 import $ from 'jquery';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { createEpicMiddleware } from 'redux-observable';
-import { fetchUserEpic } from '../../components/user/reducers/user-data';
+import rootEpic from '../../epics/index';
 
 import reducers from '../../reducers';
 import sagas from '../../sagas';
@@ -21,6 +21,7 @@ import rootRoute from '../../routes';
 import initialState from '../../initial-state';
 
 window.$ = $;
+window.Rx = Rx;
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -31,7 +32,7 @@ const history = createHistory();
 
 const sagaMiddleware = createSagaMiddleware();
 
-const epicMiddleware = createEpicMiddleware(fetchUserEpic);
+const epicMiddleware = createEpicMiddleware(rootEpic);
 
 // eslint-disable-next-line
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
