@@ -30,13 +30,19 @@ export default (actionName, request, redirect, succeedDuration = 0, errorDuratio
         payload: data.payload,
         message: data.message,
         resolveTimestamp: action.meta.timestamp,
-        duration: succeedDuration,
       })).catch(err => (Rx.Observable.of({
         type: `${actionName}_ASYNC_ERROR`,
         error: err,
         resolveTimestamp: action.meta.timestamp,
-        duration: errorDuration,
-      }))).concat(redirectUrl ? Rx.Observable.of(push(redirectUrl)) : Rx.Observable.empty())
+      }).concat(Rx.Observable.of({
+        type: 'ASYNC_CLEAR',
+        dismissTimestamp: action.meta.timestamp,
+      }).delay(errorDuration))))
+      .concat(redirectUrl ? Rx.Observable.of(push(redirectUrl)) : Rx.Observable.empty())
+      .concat(Rx.Observable.of({
+        type: 'ASYNC_CLEAR',
+        dismissTimestamp: action.meta.timestamp,
+      }).delay(succeedDuration))
     ,
   );
 };

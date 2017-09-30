@@ -23,6 +23,7 @@ export default (state = InitialState.get('loadingMessages'), action) => {
     loadingMessages.push({
       status: 1,
       message: action.message || 'Loaded!',
+      resolveTimestamp: action.resolveTimestamp,
       timestamp: action.meta.timestamp,
     });
   } else if (action.type.match(/_ASYNC_ERROR$/ig)) {
@@ -30,10 +31,12 @@ export default (state = InitialState.get('loadingMessages'), action) => {
     loadingMessages.push({
       status: -1,
       message: (action.error && action.error.responseText) || action.error || 'Error Happened!',
+      resolveTimestamp: action.resolveTimestamp,
       timestamp: action.meta.timestamp,
     });
   } else if (action.type === 'ASYNC_CLEAR') {
-    loadingMessages = loadingMessages.filter(msg => msg.timestamp !== action.dismissTimestamp);
+    loadingMessages =
+      loadingMessages.filter(msg => msg.resolveTimestamp !== action.dismissTimestamp);
   }
 
   return Immutable.fromJS(loadingMessages);

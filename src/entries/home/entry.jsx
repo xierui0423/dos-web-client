@@ -7,15 +7,12 @@ import createHistory from 'history/createHashHistory';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 
-
-import createSagaMiddleware from 'redux-saga';
 import $ from 'jquery';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { createEpicMiddleware } from 'redux-observable';
 import rootEpic from '../../epics/index';
 
 import reducers from '../../reducers';
-import sagas from '../../sagas';
 import middlewares from '../../middlewares';
 import rootRoute from '../../routes';
 import initialState from '../../initial-state';
@@ -30,8 +27,6 @@ injectTapEventPlugin();
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
 
-const sagaMiddleware = createSagaMiddleware();
-
 const epicMiddleware = createEpicMiddleware(rootEpic);
 
 // eslint-disable-next-line
@@ -41,7 +36,7 @@ const store = createStore(
   reducers,
   initialState,
   composeEnhancers(
-    applyMiddleware(...middlewares, sagaMiddleware, epicMiddleware, routerMiddleware(history))),
+    applyMiddleware(...middlewares, epicMiddleware, routerMiddleware(history))),
 );
 
 $(document).ajaxError((event, xhr) => {
@@ -50,8 +45,6 @@ $(document).ajaxError((event, xhr) => {
     store.dispatch(push('/login'));
   }
 });
-
-sagas.forEach(sagaMiddleware.run);
 
 ReactDOM.render(
   <Provider store={store} >

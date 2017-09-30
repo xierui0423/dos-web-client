@@ -88,7 +88,6 @@
     "redux-form-material-ui": "^4.2.0",
     "redux-immutable": "^3.1.0",
     "redux-observable": "^0.16.0",
-    "redux-saga": "^0.14.8",
     "rxjs": "^5.4.3",
     "socket.io-client": "^1.7.4",
     "validator": "^6.3.0"
