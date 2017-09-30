@@ -10,8 +10,9 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import $ from 'jquery';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { createEpicMiddleware } from 'redux-observable';
-import rootEpic from '../../epics/index';
+import { AppContainer } from 'react-hot-loader';
 
+import rootEpic from '../../epics';
 import reducers from '../../reducers';
 import middlewares from '../../middlewares';
 import rootRoute from '../../routes';
@@ -46,18 +47,36 @@ $(document).ajaxError((event, xhr) => {
   }
 });
 
-ReactDOM.render(
-  <Provider store={store} >
-    <ConnectedRouter history={history} >{rootRoute}</ConnectedRouter >
-  </Provider>,
+
+const render = (route) => {
+  ReactDOM.render(
+    <AppContainer>
+      <Provider store={store} >
+        <ConnectedRouter history={history} >{route}</ConnectedRouter >
+      </Provider>
+    </AppContainer>,
   document.getElementById('app'),
 );
+};
 
-// // Enable Webpack hot module replacement for reducers
-// if (module.hot) {
-//     module.hot.accept('./reducers/main-reducer.js', () => {
-//         // eslint-disable-next-line
-//         const nextRootReducer = require('./reducers/root.js').default;
-//         store.replaceReducer(nextRootReducer);
-//     });
-// }
+render(rootRoute);
+
+if (module.hot) {
+  module.hot.accept('../../reducers/index.js', () => {
+    // eslint-disable-next-line
+    const nextRootReducer = require('../../reducers/index.js').default;
+    store.replaceReducer(nextRootReducer);
+  });
+
+  module.hot.accept('../../routes/index.js', () => {
+    // eslint-disable-next-line
+    const nextRootRoute = require('../../routes/index.js').default;
+    render(nextRootRoute);
+  });
+
+  module.hot.accept('../../epics/index.js', () => {
+    // eslint-disable-next-line
+    const nextRootEpic = require('../../epics/index.js').default;
+    epicMiddleware.replaceEpic(nextRootEpic);
+  });
+}

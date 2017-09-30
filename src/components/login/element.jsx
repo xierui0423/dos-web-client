@@ -8,7 +8,7 @@ import { login } from './action-creators/login';
 
 const LoginForm = ({ handleSubmit, pristine, submitting, handleLogin }) =>
     (<Paper>
-      <form onSubmit={handleSubmit(handleLogin)} >
+      <form onSubmit={handleSubmit(handleLogin)}>
         <Field
           name="username"
           component={TextField}
