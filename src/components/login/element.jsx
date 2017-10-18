@@ -44,5 +44,4 @@ export default connect(() => ({}), {
   handleLogin: login,
 })(reduxForm({
   form: 'login',  // a unique identifier for this form
-  onSubmit: login,
 })(LoginForm));

@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import Drawer from 'material-ui/Drawer';
+import List from 'material-ui/List';
 import { MenuItem } from 'material-ui/Menu';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -8,7 +8,7 @@ import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 
 export const Navigation = ({ navigate, navigation, navigationItems, location }) =>
-    (<Drawer open={navigation.get('open')} anchor="right" type="permanent" >
+    (<List>
       {
             navigationItems.map(
                 (item) => {
@@ -27,7 +27,7 @@ export const Navigation = ({ navigate, navigation, navigationItems, location }) 
                 },
             )
         }
-    </Drawer>);
+    </List>);
 
 Navigation.propTypes = {
   location: PropTypes.object.isRequired,

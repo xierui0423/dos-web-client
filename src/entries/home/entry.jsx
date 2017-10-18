@@ -6,7 +6,8 @@ import { ConnectedRouter, routerMiddleware, push } from 'react-router-redux';
 import createHistory from 'history/createHashHistory';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
-
+import jss from 'jss';
+import jssGlobal from 'jss-global';
 import $ from 'jquery';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { createEpicMiddleware } from 'redux-observable';
@@ -20,6 +21,10 @@ import initialState from '../../initial-state';
 
 window.$ = $;
 window.Rx = Rx;
+
+jss.setup({
+  plugins: [jssGlobal()], // WITH PARENS!
+});
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -47,7 +52,6 @@ $(document).ajaxError((event, xhr) => {
   }
 });
 
-
 const render = (route) => {
   ReactDOM.render(
     <AppContainer>
@@ -55,7 +59,7 @@ const render = (route) => {
         <ConnectedRouter history={history} >{route}</ConnectedRouter >
       </Provider>
     </AppContainer>,
-  document.getElementById('app'),
+  document.getElementById('root'),
 );
 };
 
