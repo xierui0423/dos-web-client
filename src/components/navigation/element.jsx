@@ -7,7 +7,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 
-export const Navigation = ({ navigate, navigation, navigationItems, location }) =>
+export const Navigation = ({ navigate, navigationItems, location }) =>
     (<List>
       {
             navigationItems.map(
@@ -33,12 +33,9 @@ Navigation.propTypes = {
   location: PropTypes.object.isRequired,
   navigate: PropTypes.func.isRequired,
   navigationItems: ImmutablePropTypes.list.isRequired,
-  navigation: ImmutablePropTypes.map.isRequired,
 };
 
-const mapStateToProps = state => ({
-  navigation: state.get('navigation'),
-});
+const mapStateToProps = () => ({});
 
 const NavigationContainer = connect(
     mapStateToProps,

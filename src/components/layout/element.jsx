@@ -109,7 +109,6 @@ Main.propTypes = {
 
 const mapStateToProps = state => (
   {
-    // initialValues: state.get('playerData'),
     initialLoaded: state.get('initialLoaded'),
   }
 );

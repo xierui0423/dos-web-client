@@ -5,6 +5,9 @@ export default Immutable.fromJS(
     initialLoaded: false,
     userData: {},
     loadingMessages: [],
-    navigation: { open: true, disabledUrls: [] },
+    marketData: {},
+    clubData: {
+      ownedPlayers: [2, 5, 8],
+    },
   },
 );

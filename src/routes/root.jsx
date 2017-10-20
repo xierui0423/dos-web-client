@@ -3,8 +3,12 @@ import { Route } from 'react-router-dom';
 import { UserAuthWrapper } from 'redux-auth-wrapper';
 import { routerActions } from 'react-router-redux';
 import MainContainer from '../components/layout/element';
-import LoginFormContainer from '../components/login/element';
-import UserPanelContainer from '../components/user/element';
+import LoginPageContainer from '../components/login/element';
+import UserPageContainer from '../components/user/element';
+import MarketPageContainer from '../components/market/element';
+import LeaguePageContainer from '../components/market/league/element';
+import TeamPageContainer from '../components/market/team/element';
+import PlayerPageContainer from '../components/market/player/element';
 
 // Redirects to /login by default
 const UserIsAuthenticated = UserAuthWrapper({
@@ -15,11 +19,16 @@ const UserIsAuthenticated = UserAuthWrapper({
 });
 
 const MainContainerWrapper = () => (<MainContainer>
-  <Route path="/login" component={LoginFormContainer} />
   {
     ['/', '/user'].map(path => (
-      <Route key={path} exact path={path} component={UserIsAuthenticated(UserPanelContainer)} />))
-  }</MainContainer>);
+      <Route key={path} exact path={path} component={UserIsAuthenticated(UserPageContainer)} />))
+  }
+  <Route path="/login" exact component={LoginPageContainer} />
+  <Route path="/market" exact component={UserIsAuthenticated(MarketPageContainer)} />
+  <Route path="/market/:league" exact component={UserIsAuthenticated(LeaguePageContainer)} />
+  <Route path="/market/:league/:team" exact component={UserIsAuthenticated(TeamPageContainer)} />
+  <Route path="/market/:league/:team/:player" exact component={UserIsAuthenticated(PlayerPageContainer)} />
+</MainContainer>);
 
 
 const routes = (<Route component={MainContainerWrapper} />);
