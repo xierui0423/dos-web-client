@@ -1,21 +1,24 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { UserAuthWrapper } from 'redux-auth-wrapper';
+import { connectedReduxRedirect } from 'redux-auth-wrapper/history4/redirect';
 import { routerActions } from 'react-router-redux';
-import MainContainer from '../components/layout/element';
+import MainContainer from '../components/root/element';
 import LoginPageContainer from '../components/login/element';
 import UserPageContainer from '../components/user/element';
 import MarketPageContainer from '../components/market/element';
 import LeaguePageContainer from '../components/market/league/element';
 import TeamPageContainer from '../components/market/team/element';
 import PlayerPageContainer from '../components/market/player/element';
+import ClubPageContainer from '../components/club/element';
 
 // Redirects to /login by default
-const UserIsAuthenticated = UserAuthWrapper({
-  authSelector: state => state.get('userData').toJSON(), // how to get the user state
-  redirectAction: routerActions.replace, // the redux action to dispatch for redirect
-  wrapperDisplayName: 'UserIsAuthenticated', // a nice name for this auth check
-  failureRedirectPath: '/login',
+const UserIsAuthenticated = connectedReduxRedirect({
+  redirectAction: routerActions.replace,
+  redirectPath: '/login',
+  authenticatedSelector: state => state.get('userData').get('id') >= 0,
+  // authenticatingSelector: state => state.user.isLoading,
+  // AuthenticatingComponent: Loading,
+  wrapperDisplayName: 'UserIsAuthenticated',
 });
 
 const MainContainerWrapper = () => (<MainContainer>
@@ -28,6 +31,7 @@ const MainContainerWrapper = () => (<MainContainer>
   <Route path="/market/:league" exact component={UserIsAuthenticated(LeaguePageContainer)} />
   <Route path="/market/:league/:team" exact component={UserIsAuthenticated(TeamPageContainer)} />
   <Route path="/market/:league/:team/:player" exact component={UserIsAuthenticated(PlayerPageContainer)} />
+  <Route path="/club" exact component={UserIsAuthenticated(ClubPageContainer)} />
 </MainContainer>);
 
 

@@ -6,20 +6,11 @@ import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
-import { fetchMarket } from '../action-creators/market';
 
 class TeamPage extends React.Component {
 
-  componentWillMount() {
-    if (!this.props.leagueData) {
-      this.props.handleFetchMarket();
-    }
-  }
-
   render() {
     const { leagueData, teamData, playerData, navigate, match } = this.props;
-
-    if (!leagueData) { return null; }
 
     const currentLeague = leagueData.find(l => l.get('id') === parseInt(match.params.league, 10));
     const currentTeam = teamData.find(t => t.get('id') === parseInt(match.params.team, 10));
@@ -61,7 +52,6 @@ TeamPage.propTypes = {
   match: PropTypes.object.isRequired,
   teamData: ImmutablePropTypes.list.isRequired,
   playerData: ImmutablePropTypes.list.isRequired,
-  handleFetchMarket: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -77,7 +67,6 @@ const TeamPageContainer = connect(
   mapStateToProps,
   {
     navigate: push,
-    handleFetchMarket: fetchMarket,
   },
 )(withRouter(TeamPage));
 

@@ -6,8 +6,10 @@ import injectSheet from 'react-jss';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import LoadingModalContainer from '../loading/element';
 import NavigationContainer from '../navigation/element';
-import { fetchUser } from '../user/action-creators/user';
 import config from '../../config/index';
+import { fetchUser } from '../user/action-creators/user';
+import { fetchMarket } from '../market/action-creators/market';
+import { fetchClub } from '../club/action-creators/club';
 
 const theme = createMuiTheme({
   palette: {
@@ -71,31 +73,55 @@ const style = {
 
 class Main extends React.Component {
 
-  componentWillMount() {
+  componentDidMount() {
     // Retrieve the user data if it doesn't exist
-    if (!this.props.initialLoaded) {
+    if (this.props.userLoadFlag === -2) {
       this.props.handleFetchUser();
+    }
+
+    if (this.props.marketLoadFlag === -2) {
+      this.props.handleFetchMarket();
+    }
+
+    if (this.props.clubLoadFlag === -2) {
+      this.props.handleFetchClub();
+    }
+  }
+
+  componentDidUpdate() {
+    // Retrieve the user data if it doesn't exist
+    if (this.props.userLoadFlag === -2) {
+      this.props.handleFetchUser();
+    }
+
+    if (this.props.marketLoadFlag === -2) {
+      this.props.handleFetchMarket();
+    }
+
+    if (this.props.clubLoadFlag === -2) {
+      this.props.handleFetchClub();
     }
   }
 
   render() {
-    const { classes, children, initialLoaded } = this.props;
+    const { classes, children, userLoadFlag, marketLoadFlag, clubLoadFlag } = this.props;
 
-    return initialLoaded ? (
-      <MuiThemeProvider theme={theme}>
-        <div className={classes.mainWrapper}>
-          <LoadingModalContainer />
-          <nav className={classes.navbar}>
-            <NavigationContainer
-              navbarWidth={NAVBAR_WIDTH}
-              navigationItems={Immutable.fromJS(config.navigationItems)}
-            />
-          </nav>
-          <div className={classes.content}>
+    return (<MuiThemeProvider theme={theme}>
+      <div className={classes.mainWrapper}>
+        <LoadingModalContainer />
+        <nav className={classes.navbar}>
+          <NavigationContainer
+            navbarWidth={NAVBAR_WIDTH}
+            navigationItems={Immutable.fromJS(config.navigationItems)}
+          />
+        </nav>
+        {(userLoadFlag === 1 && marketLoadFlag === 1 && clubLoadFlag === 1) ?
+          (<div className={classes.content}>
             {children}
-          </div>
-        </div>
-      </MuiThemeProvider>) : null;
+          </div>) : (<div>Loading...</div>)
+          }
+      </div>
+    </MuiThemeProvider>);
   }
 }
 
@@ -103,18 +129,27 @@ class Main extends React.Component {
 Main.propTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.array.isRequired,
-  initialLoaded: PropTypes.bool.isRequired,
+  userLoadFlag: PropTypes.number.isRequired,
+  marketLoadFlag: PropTypes.number.isRequired,
+  clubLoadFlag: PropTypes.number.isRequired,
   handleFetchUser: PropTypes.func.isRequired,
+  handleFetchMarket: PropTypes.func.isRequired,
+  handleFetchClub: PropTypes.func.isRequired,
+
 };
 
 const mapStateToProps = state => (
   {
-    initialLoaded: state.get('initialLoaded'),
+    userLoadFlag: state.get('userData').get('loadFlag'),
+    marketLoadFlag: state.get('marketData').get('loadFlag'),
+    clubLoadFlag: state.get('clubData').get('loadFlag'),
   }
 );
 
 const MainContainer = connect(mapStateToProps, {
   handleFetchUser: fetchUser,
+  handleFetchMarket: fetchMarket,
+  handleFetchClub: fetchClub,
 })(injectSheet(style)(Main));
 
 export default MainContainer;

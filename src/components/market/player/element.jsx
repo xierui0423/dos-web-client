@@ -7,22 +7,13 @@ import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import Button from 'material-ui/Button';
-import { fetchMarket } from '../action-creators/market';
 
 class MarketPage extends React.Component {
 
-  componentWillMount() {
-    if (!this.props.leagueData) {
-      this.props.handleFetchMarket();
-    }
-  }
-
   render() {
     const {
-      leagueData, teamData, playerData, ownedPlayers, navigate, match,
+      leagueData, teamData, playerData, clubData, navigate, match,
     } = this.props;
-
-    if (!leagueData) { return null; }
 
     const currentLeague = leagueData.find(l => l.get('id') === parseInt(match.params.league, 10));
     const currentTeam = teamData.find(t => t.get('id') === parseInt(match.params.team, 10));
@@ -48,7 +39,7 @@ class MarketPage extends React.Component {
       </Paper>
       <Paper>{currentPlayer.get('name')}</Paper>
       {
-        ownedPlayers.includes(currentPlayer.get('id')) ?
+        clubData.get('ownedPlayers').includes(currentPlayer.get('id')) ?
           <Button>Sell</Button> : <Button>Sign</Button>
       }
 
@@ -62,8 +53,7 @@ MarketPage.propTypes = {
   match: PropTypes.object.isRequired,
   teamData: ImmutablePropTypes.list.isRequired,
   playerData: ImmutablePropTypes.list.isRequired,
-  ownedPlayers: ImmutablePropTypes.list.isRequired,
-  handleFetchMarket: PropTypes.func.isRequired,
+  clubData: ImmutablePropTypes.map.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -72,8 +62,7 @@ const mapStateToProps = (state) => {
     leagueData: marketData.get('leagueData'),
     teamData: marketData.get('teamData'),
     playerData: marketData.get('playerData'),
-    ownedPlayers: state.get('clubData').get('ownedPlayers'),
-    userData: state.get('userData'),
+    clubData: state.get('clubData'),
   };
 };
 
@@ -81,7 +70,6 @@ const MarketPageContainer = connect(
   mapStateToProps,
   {
     navigate: push,
-    handleFetchMarket: fetchMarket,
   },
 )(withRouter(MarketPage));
 

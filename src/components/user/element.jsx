@@ -6,10 +6,6 @@ import { connect } from 'react-redux';
 import { logout } from './action-creators/user';
 
 class UserPanel extends React.Component {
-
-  componentWillMount() {
-  }
-
   render() {
     const { userData, handleLogout } = this.props;
     return (
@@ -21,15 +17,14 @@ class UserPanel extends React.Component {
           type="button"
           onClick={() => handleLogout()}
         >
-                    Logout
-                </Button>
+          Logout
+        </Button>
       </div>);
   }
 }
 
 UserPanel.propTypes = {
   userData: ImmutablePropTypes.map.isRequired,
-    // handleFetchUser: React.PropTypes.func,
   handleLogout: PropTypes.func.isRequired,
 };
 
@@ -40,9 +35,8 @@ const mapStateToProps = state => (
 );
 
 const UserPanelContainer = connect(
-    mapStateToProps,
+  mapStateToProps,
   {
-        // handleFetchUser: fetchUser,
     handleLogout: logout,
   },
 )(UserPanel);
