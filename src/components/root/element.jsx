@@ -115,16 +115,19 @@ class Main extends React.Component {
             navigationItems={Immutable.fromJS(config.navigationItems)}
           />
         </nav>
-        {(userLoadFlag === 1 && marketLoadFlag === 1 && clubLoadFlag === 1) ?
-          (<div className={classes.content}>
-            {children}
-          </div>) : (<div>Loading...</div>)
-          }
+
+        {
+          (userLoadFlag === -1 || marketLoadFlag === -1 || clubLoadFlag === -1) ?
+            (<div> Something went wrong, please refresh the page to reload... </div>) :
+            (userLoadFlag === 1 && marketLoadFlag === 1 && clubLoadFlag === 1) ?
+              (<div className={classes.content}>
+                {children}
+              </div>) : (<div>Loading...</div>)
+        }
       </div>
     </MuiThemeProvider>);
   }
 }
-
 
 Main.propTypes = {
   classes: PropTypes.object.isRequired,

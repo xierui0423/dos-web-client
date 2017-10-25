@@ -5,6 +5,6 @@ export default Immutable.fromJS(
     loadingMessages: [],
     userData: { loadFlag: -2 },
     marketData: { loadFlag: -2 },
-    clubData: { loadFlag: -2, ownedPlayers: [] },
+    clubData: { loadFlag: -2, players: [] },
   },
 );

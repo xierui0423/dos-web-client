@@ -8,11 +8,13 @@ import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import Button from 'material-ui/Button';
 
+import { updatePlayer } from '../../club/action-creators/club';
+
 class MarketPage extends React.Component {
 
   render() {
     const {
-      leagueData, teamData, playerData, clubData, navigate, match,
+      leagueData, teamData, playerData, clubData, handleUpdatePlayer, navigate, match,
     } = this.props;
 
     const currentLeague = leagueData.find(l => l.get('id') === parseInt(match.params.league, 10));
@@ -39,8 +41,14 @@ class MarketPage extends React.Component {
       </Paper>
       <Paper>{currentPlayer.get('name')}</Paper>
       {
-        clubData.get('ownedPlayers').includes(currentPlayer.get('id')) ?
-          <Button>Sell</Button> : <Button>Sign</Button>
+        clubData.get('players').includes(currentPlayer.get('id')) ?
+          <Button onClick={() => {
+            handleUpdatePlayer(clubData.set('players', clubData.get('players').filter(pid => pid !== currentPlayer.get('id'))).toJSON());
+          }}
+          >Sell</Button> : <Button onClick={() => {
+            handleUpdatePlayer(clubData.set('players', clubData.get('players').push(currentPlayer.get('id'))).toJSON());
+          }}
+          >Sign</Button>
       }
 
     </div>);
@@ -50,6 +58,7 @@ class MarketPage extends React.Component {
 MarketPage.propTypes = {
   leagueData: ImmutablePropTypes.list.isRequired,
   navigate: PropTypes.func.isRequired,
+  handleUpdatePlayer: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
   teamData: ImmutablePropTypes.list.isRequired,
   playerData: ImmutablePropTypes.list.isRequired,
@@ -70,6 +79,7 @@ const MarketPageContainer = connect(
   mapStateToProps,
   {
     navigate: push,
+    handleUpdatePlayer: updatePlayer,
   },
 )(withRouter(MarketPage));
 

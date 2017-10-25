@@ -15,7 +15,7 @@ class ClubPage extends React.Component {
 
     return (<div>
       <Paper>MARKET
-        {clubData.get('ownedPlayers').map(pid => playerData.find(player => player.get('id') === pid)).map((player) => {
+        {clubData.get('players').map(pid => playerData.find(player => player.get('id') === pid)).map((player) => {
           const team = teamData.find(t => t.get('id') === player.get('teamId'));
           const league = leagueData.find(l => l.get('id') === team.get('leagueId'));
 
@@ -26,6 +26,11 @@ class ClubPage extends React.Component {
             }}
           >{player.get('name')}</Avatar>);
         })}
+      </Paper>
+      <Paper>BALANCE
+        <div>
+          {clubData.get('balance')}
+        </div>
       </Paper>
     </div>);
   }

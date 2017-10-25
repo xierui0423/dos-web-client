@@ -5,10 +5,7 @@ import InitialState from '../../../initial-state';
 export const loginEpic = epicFactory('LOGIN', {
   url: 'public/account/user/login/',
   method: 'POST',
-  inputHandler: action => (JSON.stringify({
-    username: action.loginData.get('username'),
-    password: action.loginData.get('password'),
-  })),
+  inputHandler: data => data.toJSON(),
 }, '/user');
 
 export const fetchUserEpic = epicFactory('FETCH_USER', {
@@ -30,6 +27,10 @@ export default (state = InitialState.get('userData'), action) => {
       return Immutable.fromJS(action.payload.userData).set('loadFlag', 1);
     case 'LOGOUT_ASYNC_SUCCEED':
       return InitialState.get('userData').set('loadFlag', 1);
+    case 'LOGIN_ASYNC_ERROR':
+    case 'FETCH_USER_ASYNC_ERROR':
+    case 'LOGOUT_ASYNC_ERROR':
+      return state.set('loadFlag', -1);
     default:
       return state;
   }

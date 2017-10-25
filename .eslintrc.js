@@ -37,5 +37,8 @@ module.exports = {
 
     // allow unary operators since we are not using auto semicolon insertion process
     'no-plusplus': 0,
+
+    // allow nested ternary since it's helpful in JSX
+    'no-nested-ternary': 0,
   }
 }

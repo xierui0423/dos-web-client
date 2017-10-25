@@ -9,7 +9,7 @@ const ajaxInvoker = request => ({
       method: request.method,
       contentType: 'application/json',
       dataType: 'json',
-      data,
+      data: JSON.stringify(data),
       xhrFields: {
         withCredentials: true,
       },
@@ -24,7 +24,7 @@ export default (actionName, request, redirect, succeedDuration = 0, errorDuratio
   const redirectUrl = Utils.getUrlVars().redirect || redirect;
   return action$ => action$.ofType(`${actionName}_ASYNC`).mergeMap(
     action => Rx.Observable.fromPromise(dataService.source(
-      typeof dataService.inputHandler === 'function' && dataService.inputHandler(action)))
+      typeof dataService.inputHandler === 'function' ? dataService.inputHandler(action.payload) : action.payload))
       .map(data => ({
         type: `${actionName}_ASYNC_SUCCEED`,
         payload: data.payload,
