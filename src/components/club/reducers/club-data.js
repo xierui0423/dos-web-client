@@ -9,8 +9,13 @@ export const fetchClubEpic = epicFactory('FETCH_CLUB', {
   method: 'GET',
 });
 
-export const updateClubEpic = epicFactory('UPDATE_PLAYER', {
+export const updatePlayerEpic = epicFactory('UPDATE_PLAYER', {
   url: 'private/club/update-player/',
+  method: 'POST',
+});
+
+export const updateTacticEpic = epicFactory('UPDATE_TACTIC', {
+  url: 'private/club/update-tactic/',
   method: 'POST',
 });
 
@@ -21,6 +26,7 @@ export default reduceReducers(
         return state.set('loadFlag', 0);
       case 'FETCH_CLUB_ASYNC_SUCCEED':
       case 'UPDATE_PLAYER_ASYNC_SUCCEED':
+      case 'UPDATE_TACTIC_ASYNC_SUCCEED':
         return Immutable.fromJS(action.payload.clubData).set('loadFlag', 1);
       case 'LOGIN_ASYNC_SUCCEED':
         return InitialState.get('clubData').set('loadFlag', -2);
@@ -28,7 +34,8 @@ export default reduceReducers(
         return InitialState.get('clubData').set('loadFlag', 1);
       case 'LOGIN_ASYNC_ERROR':
       case 'FETCH_CLUB_ASYNC_ERROR':
-      case 'UPDATE_PLAYER_ERROR':
+      case 'UPDATE_PLAYER_ASYNC_ERROR':
+      case 'UPDATE_TACTIC_ASYNC_ERROR':
       case 'LOGOUT_ASYNC_ERROR':
         return state.set('loadFlag', -1);
       default:

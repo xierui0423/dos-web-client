@@ -6,7 +6,6 @@ import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
-import { fetchClub } from './action-creators/club';
 
 class ClubPage extends React.Component {
 
@@ -55,7 +54,6 @@ const ClubPageContainer = connect(
   mapStateToProps,
   {
     navigate: push,
-    handleFetchClub: fetchClub,
   },
 )(withRouter(ClubPage));
 

@@ -8,7 +8,7 @@ import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import Button from 'material-ui/Button';
 
-import { updatePlayer } from '../../club/action-creators/club';
+import { updatePlayer } from '../../../club/action-creators/club';
 
 class MarketPage extends React.Component {
 
@@ -42,9 +42,11 @@ class MarketPage extends React.Component {
       <Paper>{currentPlayer.get('name')}</Paper>
       {
         clubData.get('players').includes(currentPlayer.get('id')) ?
-          <Button onClick={() => {
-            handleUpdatePlayer(clubData.set('players', clubData.get('players').filter(pid => pid !== currentPlayer.get('id'))).toJSON());
-          }}
+          <Button
+            onClick={() => {
+              handleUpdatePlayer(clubData.set('players', clubData.get('players').filter(pid => pid !== currentPlayer.get('id'))).toJSON());
+            }}
+            disabled={clubData.get('balance') >= currentPlayer.get('value')}
           >Sell</Button> : <Button onClick={() => {
             handleUpdatePlayer(clubData.set('players', clubData.get('players').push(currentPlayer.get('id'))).toJSON());
           }}

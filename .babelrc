@@ -17,6 +17,7 @@
   "plugins": [
     // Enables React code to work with HMR.
     "react-hot-loader/babel",
-    "syntax-dynamic-import"
+    "syntax-dynamic-import",
+    "transform-object-rest-spread"
   ]
 }

@@ -3,5 +3,6 @@ export default [
   { name: 'User', urls: ['/user', '/'] },
   { name: 'Market', urls: ['/market', '/'] },
   { name: 'Club', urls: ['/club', '/'] },
+  { name: 'Tactic', urls: ['/tactic', '/'] },
 ];
 

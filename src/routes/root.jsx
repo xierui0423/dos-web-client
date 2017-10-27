@@ -6,10 +6,11 @@ import MainContainer from '../components/root/element';
 import LoginPageContainer from '../components/login/element';
 import UserPageContainer from '../components/user/element';
 import MarketPageContainer from '../components/market/element';
-import LeaguePageContainer from '../components/market/league/element';
-import TeamPageContainer from '../components/market/team/element';
-import PlayerPageContainer from '../components/market/player/element';
+import LeaguePageContainer from '../components/market/sub-components/league/element';
+import TeamPageContainer from '../components/market/sub-components/team/element';
+import PlayerPageContainer from '../components/market/sub-components/player/element';
 import ClubPageContainer from '../components/club/element';
+import TacticPageContainer from '../components/tactic/element';
 
 // Redirects to /login by default
 const UserIsAuthenticated = connectedReduxRedirect({
@@ -32,6 +33,7 @@ const MainContainerWrapper = () => (<MainContainer>
   <Route path="/market/:league/:team" exact component={UserIsAuthenticated(TeamPageContainer)} />
   <Route path="/market/:league/:team/:player" exact component={UserIsAuthenticated(PlayerPageContainer)} />
   <Route path="/club" exact component={UserIsAuthenticated(ClubPageContainer)} />
+  <Route path="/tactic" exact component={UserIsAuthenticated(TacticPageContainer)} />
 </MainContainer>);
 
 
