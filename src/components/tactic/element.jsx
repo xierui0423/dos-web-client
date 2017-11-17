@@ -1,56 +1,39 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import Immutable from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { withRouter } from 'react-router-dom';
-import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import Paper from 'material-ui/Paper';
-import Avatar from 'material-ui/Avatar';
+import { DragDropContext } from 'react-beautiful-dnd';
+import Button from 'material-ui/Button';
+
 import { updateTactic } from '../club/action-creators/club';
-
-
-// fake data generator
-const getItems = count =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k}`,
-    content: `item ${k}`,
-  }));
-
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
-// using some little inline style helpers to make the app look okay
-const grid = 8;
-const getItemStyle = (draggableStyle, isDragging) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-
-  // change background colour if dragging
-  background: isDragging ? 'lightgreen' : 'grey',
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
-});
-const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey',
-  padding: grid,
-  width: 250,
-});
+import PlayerBucket from './sub-components/player-bucket/element';
 
 class TacticPage extends React.Component {
   constructor(props) {
     super(props);
+
+    const { clubData, playerData } = props;
+
+    const tactic = clubData.get('tactic');
+    const players = clubData.get('players').map(id => playerData.find(player => player.get('id') === id));
+
+    const goalKeepers = tactic.get('goalKeepers').map(id => players.find(player => player.get('id') === id));
+    const defenders = tactic.get('defenders').map(id => players.find(player => player.get('id') === id));
+    const midfielders = tactic.get('midfielders').map(id => players.find(player => player.get('id') === id));
+    const attackers = tactic.get('attackers').map(id => players.find(player => player.get('id') === id));
+
+
     this.state = {
-      items: getItems(10),
+      players: players.filter(player =>
+        !tactic.get('goalKeepers').includes(player.get('id'))
+        && !tactic.get('defenders').includes(player.get('id'))
+        && !tactic.get('midfielders').includes(player.get('id'))
+        && !tactic.get('attackers').includes(player.get('id'))),
+      goalKeepers,
+      defenders,
+      midfielders,
+      attackers,
     };
     this.onDragEnd = this.onDragEnd.bind(this);
   }
@@ -60,53 +43,65 @@ class TacticPage extends React.Component {
     if (!result.destination) {
       return;
     }
+    const newState = {};
 
-    const items = reorder(
-      this.state.items,
-      result.source.index,
-      result.destination.index
-    );
+    ['players', 'goalKeepers', 'defenders', 'midfielders', 'attackers'].forEach((bucketName) => {
+      const currentBucket = this.state[bucketName];
 
-    this.setState({
-      items,
+      newState[bucketName] = currentBucket;
+
+      // Remove from the source bucket
+      if (result.source.droppableId === bucketName) {
+        newState[bucketName] = currentBucket.remove(result.source.index);
+      }
+
+      if (result.destination.droppableId === bucketName) {
+        newState[bucketName] =
+          (result.source.droppableId === bucketName ? newState[bucketName] : currentBucket)
+            .insert(result.destination.index,
+              this.state[result.source.droppableId].get(result.source.index));
+      }
     });
+
+    this.setState(newState);
   }
 
   // Normally you would want to split things out into separate components.
   // But in this example everything is just done in one place for simplicity
   render() {
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}
-            >
-              {this.state.items.map(item => (
-                <Draggable key={item.id} draggableId={item.id}>
-                  {(provided, snapshot) => (
-                    <div>
-                      <div
-                        ref={provided.innerRef}
-                        style={getItemStyle(
-                          provided.draggableStyle,
-                          snapshot.isDragging
-                        )}
-                        {...provided.dragHandleProps}
-                      >
-                        {item.content}
-                      </div>
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <div>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <div>
+            <PlayerBucket
+              players={this.state.players}
+              droppableId="players"
+              droppableName="Bench"
+            />
+            <PlayerBucket
+              players={this.state.goalKeepers}
+              droppableId="goalKeepers"
+              droppableName="Goal Keeper"
+            />
+            <PlayerBucket
+              players={this.state.defenders}
+              droppableId="defenders"
+              droppableName="Defenders"
+            />
+            <PlayerBucket
+              players={this.state.midfielders}
+              droppableId="midfielders"
+              droppableName="Mid Fielders"
+            />
+            <PlayerBucket
+              players={this.state.attackers}
+              droppableId="attackers"
+              droppableName="Attackers"
+            />
+          </div>
+        </DragDropContext>
+        <Button>Save</Button>
+      </div>
     );
   }
 }
@@ -114,49 +109,18 @@ class TacticPage extends React.Component {
 TacticPage.propTypes = {
   clubData: ImmutablePropTypes.map.isRequired,
   playerData: ImmutablePropTypes.list.isRequired,
-  teamData: ImmutablePropTypes.list.isRequired,
-  leagueData: ImmutablePropTypes.list.isRequired,
-  handleUpdateTactic: PropTypes.func.isRequired,
-  navigate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  playerData: state.get('marketData').get('playerData'),
-  teamData: state.get('marketData').get('teamData'),
-  leagueData: state.get('marketData').get('leagueData'),
   clubData: state.get('clubData'),
+  playerData: state.get('marketData').get('playerData'),
 });
 
 const TacticPageContainer = connect(
   mapStateToProps,
   {
-    navigate: push,
     handleUpdateTactic: updateTactic,
   },
 )(withRouter(TacticPage));
 
 export default TacticPageContainer;
-
-
-// import React from 'react';
-// import PropTypes from 'prop-types';
-// import ImmutablePropTypes from 'react-immutable-proptypes';
-// import { withRouter } from 'react-router-dom';
-// import { push } from 'react-router-redux';
-// import { connect } from 'react-redux';
-// import Paper from 'material-ui/Paper';
-// import Avatar from 'material-ui/Avatar';
-// import { updateTactic } from '../club/action-creators/club';
-//
-// class TacticPage extends React.Component {
-//
-//   render() {
-//     const { clubData, playerData, teamData, leagueData, navigate } = this.props;
-//
-//     return (<div>
-//       <Paper>Tactic</Paper>
-//     </div>);
-//   }
-// }
-//
-

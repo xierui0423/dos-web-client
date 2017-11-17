@@ -11,6 +11,7 @@ export default Immutable.fromJS(
       tactic: {
         formation: 0,
         // 0 541, 1 532, 2 451, 3 442, 4 433, 5, 361, 6 352, 7 343
+        goalKeepers: [],
         attackers: [],
         midfielders: [],
         defenders: [],
