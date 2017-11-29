@@ -1,18 +1,17 @@
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { Draggable } from 'react-beautiful-dnd';
-
 import Avatar from 'material-ui/Avatar';
-
 
 // using some little inline style helpers to make the app look okay
 const getItemStyle = (draggableStyle, isDragging) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
-  padding: 16,
   margin: '0 8px 0 0',
-  flex: 1,
-
+  boxSizing: 'boarder-box',
+  width: 40,
+  height: 40,
+  display: 'inline-block',
   // change background colour if dragging
   background: isDragging ? 'lightgreen' : 'grey',
 
@@ -25,9 +24,9 @@ class PlayerCard extends React.Component {
     const player = this.props.player;
 
     return (
-      <Draggable draggableId={player.get('id')} >
+      <Draggable draggableId={player.get('id')}>
         {(provided, snapshot) => (
-          <div style={{ flex: 1 }}>
+          <div className="test" style={{ display: 'inline-block', verticalAlign: 'top', fontSize: 0 }}>
             <div
               ref={provided.innerRef}
               style={getItemStyle(
@@ -40,7 +39,11 @@ class PlayerCard extends React.Component {
                 {player.get('name')}
               </Avatar>
             </div>
-            {provided.placeholder}
+            {snapshot.isDragging ? <div style={{ width: 40,
+              height: 40,
+              margin: '0 8px 0 0',
+              display: 'inline-block' }}
+            /> : null}
           </div>
         )}
       </Draggable>

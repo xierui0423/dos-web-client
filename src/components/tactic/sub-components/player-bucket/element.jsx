@@ -10,6 +10,8 @@ import PlayerCard from '../player-card/element';
 const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? 'lightblue' : 'lightgrey',
   padding: 8,
+  minHeight: 40,
+  boxSizing: 'content-box',
 });
 
 class PlayerBucket extends React.Component {
@@ -17,22 +19,26 @@ class PlayerBucket extends React.Component {
     const { players, droppableId, droppableName } = this.props;
 
     return (
-      <Droppable droppableId={droppableId} direction="horizontal">
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}
-          >
-            <Paper>{droppableName}</Paper>
-            <div style={{ display: 'flex' }}>
-              {players.map(player => (
-                <PlayerCard player={player} key={player.get('id')} />
-              ))}
+      <div><Paper>{droppableName}</Paper>
+        <Droppable
+          droppableId={droppableId}
+          direction="horizontal"
+        >
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              style={getListStyle(snapshot.isDraggingOver)}
+            >
+              <div>
+                {players.map(player => (
+                  <PlayerCard player={player} key={player.get('id')} />
+                ))}
+              </div>
             </div>
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
+          )}
+        </Droppable>
+      </div>
+
     );
   }
 }
