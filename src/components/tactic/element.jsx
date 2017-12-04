@@ -1,5 +1,6 @@
 import React from 'react';
 import Immutable from 'immutable';
+import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -100,7 +101,15 @@ class TacticPage extends React.Component {
             />
           </div>
         </DragDropContext>
-        <Button>Save</Button>
+        <Button onClick={() => {
+          this.props.handleUpdateTactic({
+            goalKeepers: this.state.goalKeepers.map(p => p.get('id')),
+            defenders: this.state.defenders.map(p => p.get('id')),
+            midfielders: this.state.midfielders.map(p => p.get('id')),
+            attackers: this.state.attackers.map(p => p.get('id')),
+          });
+        }}
+        >Save</Button>
       </div>
     );
   }
@@ -109,6 +118,7 @@ class TacticPage extends React.Component {
 TacticPage.propTypes = {
   clubData: ImmutablePropTypes.map.isRequired,
   playerData: ImmutablePropTypes.list.isRequired,
+  handleUpdateTactic: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

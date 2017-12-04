@@ -42,7 +42,6 @@ export default (actionName, request, redirect, succeedDuration = 0, errorDuratio
       .concat(Rx.Observable.of({
         type: 'ASYNC_CLEAR',
         dismissTimestamp: action.meta.timestamp,
-      }).delay(succeedDuration))
-    ,
+      }).delay(succeedDuration)),
   );
 };

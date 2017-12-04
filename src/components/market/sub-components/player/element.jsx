@@ -44,11 +44,11 @@ class MarketPage extends React.Component {
         clubData.get('players').includes(currentPlayer.get('id')) ?
           <Button
             onClick={() => {
-              handleUpdatePlayer(clubData.set('players', clubData.get('players').filter(pid => pid !== currentPlayer.get('id'))).toJSON());
+              handleUpdatePlayer(clubData.get('players').filter(pid => pid !== currentPlayer.get('id')).toJSON());
             }}
           >Sell</Button> : <Button
             onClick={() => {
-              handleUpdatePlayer(clubData.set('players', clubData.get('players').push(currentPlayer.get('id'))).toJSON());
+              handleUpdatePlayer(clubData.get('players').push(currentPlayer.get('id')).toJSON());
             }}
             disabled={clubData.get('balance') < currentPlayer.get('value')}
           >Sign</Button>
