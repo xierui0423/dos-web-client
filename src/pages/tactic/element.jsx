@@ -10,6 +10,8 @@ import Button from 'material-ui/Button';
 import { updateTactic } from '../club/action-creators/club';
 import PlayerBucket from './sub-components/player-bucket/element';
 
+import confirmation from '../../components/confirmation/element';
+
 class TacticPage extends React.Component {
   constructor(props) {
     super(props);
@@ -101,14 +103,28 @@ class TacticPage extends React.Component {
             />
           </div>
         </DragDropContext>
-        <Button onClick={() => {
-          this.props.handleUpdateTactic({
-            goalKeepers: this.state.goalKeepers.map(p => p.get('id')),
-            defenders: this.state.defenders.map(p => p.get('id')),
-            midfielders: this.state.midfielders.map(p => p.get('id')),
-            attackers: this.state.attackers.map(p => p.get('id')),
-          });
-        }}
+        <Button
+          raised
+          color="primary"
+          onClick={() => {
+            if (this.state.goalKeepers.size && this.state.defenders.size
+              && this.state.midfielders.size && this.state.attackers.size) {
+              confirmation({
+                title: 'Save',
+                text: 'Are you sure to save the tactic?',
+                handleOk: () => {
+                  this.props.handleUpdateTactic({
+                    goalKeepers: this.state.goalKeepers.map(p => p.get('id')),
+                    defenders: this.state.defenders.map(p => p.get('id')),
+                    midfielders: this.state.midfielders.map(p => p.get('id')),
+                    attackers: this.state.attackers.map(p => p.get('id')),
+                  });
+                },
+              });
+            } else {
+              confirmation({ alert: 'Invalid tactic!!!' });
+            }
+          }}
         >Save</Button>
       </div>
     );

@@ -6,7 +6,7 @@ export const loginEpic = epicFactory('LOGIN', {
   url: 'public/account/user/login/',
   method: 'POST',
   inputHandler: data => data.toJSON(),
-}, '/user');
+}, '/user', 1000);
 
 export const fetchUserEpic = epicFactory('FETCH_USER', {
   url: 'private/account/user/retrieve/',

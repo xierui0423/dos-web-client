@@ -28,14 +28,14 @@ export const LoadingModal = ({ loadingMessages }) => {
       title = 'Loaded';
   }
 
-  return (loadingMessages.size ?
-    <Dialog open title={title}>
+  return (
+    <Dialog open={loadingMessages.size > 0} title={title}>
       <List>
         {loadingMessages.valueSeq().map(message => (<ListItem
           key={message.get('timestamp')}
         > <ListItemText primary={message.get('message')} /></ListItem >))}
       </List>
-    </Dialog> : null);
+    </Dialog>);
 };
 
 LoadingModal.propTypes = {

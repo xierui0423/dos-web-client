@@ -3,9 +3,10 @@ import { combineReducers } from 'redux-immutable';
 import reduceReducers from 'reduce-reducers';
 
 import loadingMessages from '../components/loading/reducers/loading-messages';
-import userData from '../components/user/reducers/user-data';
-import marketData from '../components/market/reducers/market-data';
-import clubData from '../components/club/reducers/club-data';
+
+import userData from '../pages/user/reducers/user-data';
+import marketData from '../pages/market/reducers/market-data';
+import clubData from '../pages/club/reducers/club-data';
 
 import globalReducer from './global';
 

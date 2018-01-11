@@ -4,7 +4,7 @@ import Immutable from 'immutable';
 import { connect } from 'react-redux';
 import injectSheet from 'react-jss';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import LoadingModalContainer from '../loading/element';
+import LoadingModalContainer from '../../components/loading/element';
 import NavigationContainer from '../navigation/element';
 import config from '../../config/index';
 import { fetchUser } from '../user/action-creators/user';

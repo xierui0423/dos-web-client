@@ -2,15 +2,15 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { connectedReduxRedirect } from 'redux-auth-wrapper/history4/redirect';
 import { routerActions } from 'react-router-redux';
-import MainContainer from '../components/root/element';
-import LoginPageContainer from '../components/login/element';
-import UserPageContainer from '../components/user/element';
-import MarketPageContainer from '../components/market/element';
-import LeaguePageContainer from '../components/market/sub-components/league/element';
-import TeamPageContainer from '../components/market/sub-components/team/element';
-import PlayerPageContainer from '../components/market/sub-components/player/element';
-import ClubPageContainer from '../components/club/element';
-import TacticPageContainer from '../components/tactic/element';
+import MainContainer from '../pages/root/element';
+import LoginPageContainer from '../pages/login/element';
+import UserPageContainer from '../pages/user/element';
+import MarketPageContainer from '../pages/market/element';
+import LeaguePageContainer from '../pages/market/sub-components/league/element';
+import TeamPageContainer from '../pages/market/sub-components/team/element';
+import PlayerPageContainer from '../pages/market/sub-components/player/element';
+import ClubPageContainer from '../pages/club/element';
+import TacticPageContainer from '../pages/tactic/element';
 
 // Redirects to /login by default
 const UserIsAuthenticated = connectedReduxRedirect({

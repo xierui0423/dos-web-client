@@ -1,6 +1,6 @@
-import { loginEpic, logoutEpic, fetchUserEpic } from '../components/user/reducers/user-data';
-import { fetchMarketEpic } from '../components/market/reducers/market-data';
-import { fetchClubEpic, updatePlayerEpic, updateTacticEpic } from '../components/club/reducers/club-data';
+import { loginEpic, logoutEpic, fetchUserEpic } from '../pages/user/reducers/user-data';
+import { fetchMarketEpic } from '../pages/market/reducers/market-data';
+import { fetchClubEpic, updatePlayerEpic, updateTacticEpic } from '../pages/club/reducers/club-data';
 
 export default (action$, store) => Rx.Observable.merge(
   loginEpic(action$, store),

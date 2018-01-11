@@ -16,6 +16,7 @@ const LoginForm = ({ handleSubmit, pristine, submitting, handleLogin }) =>
           type="text"
           placeholder="Username"
           label="Username"
+          autoFocus
         />
         <Divider />
         <Field
