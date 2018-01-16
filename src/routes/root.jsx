@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { connectedReduxRedirect } from 'redux-auth-wrapper/history4/redirect';
 import { routerActions } from 'react-router-redux';
 import MainContainer from '../pages/root/element';
@@ -17,23 +17,21 @@ const UserIsAuthenticated = connectedReduxRedirect({
   redirectAction: routerActions.replace,
   redirectPath: '/login',
   authenticatedSelector: state => state.get('userData').get('id') >= 0,
-  // authenticatingSelector: state => state.user.isLoading,
-  // AuthenticatingComponent: Loading,
   wrapperDisplayName: 'UserIsAuthenticated',
 });
 
 const MainContainerWrapper = () => (<MainContainer>
-  {
-    ['/', '/user'].map(path => (
-      <Route key={path} exact path={path} component={UserIsAuthenticated(UserPageContainer)} />))
-  }
-  <Route path="/login" exact component={LoginPageContainer} />
-  <Route path="/market" exact component={UserIsAuthenticated(MarketPageContainer)} />
-  <Route path="/market/:league" exact component={UserIsAuthenticated(LeaguePageContainer)} />
-  <Route path="/market/:league/:team" exact component={UserIsAuthenticated(TeamPageContainer)} />
-  <Route path="/market/:league/:team/:player" exact component={UserIsAuthenticated(PlayerPageContainer)} />
-  <Route path="/club" exact component={UserIsAuthenticated(ClubPageContainer)} />
-  <Route path="/tactic" exact component={UserIsAuthenticated(TacticPageContainer)} />
+  <Switch>
+    <Route path="/login" exact component={LoginPageContainer} />
+    <Route path="/user" exact component={UserIsAuthenticated(UserPageContainer)} />
+    <Route path="/market" exact component={UserIsAuthenticated(MarketPageContainer)} />
+    <Route path="/market/:league" exact component={UserIsAuthenticated(LeaguePageContainer)} />
+    <Route path="/market/:league/:team" exact component={UserIsAuthenticated(TeamPageContainer)} />
+    <Route path="/market/:league/:team/:player" exact component={UserIsAuthenticated(PlayerPageContainer)} />
+    <Route path="/club" exact component={UserIsAuthenticated(ClubPageContainer)} />
+    <Route path="/tactic" exact component={UserIsAuthenticated(TacticPageContainer)} />
+    <Redirect to="/user" />
+  </Switch>
 </MainContainer>);
 
 

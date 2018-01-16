@@ -10,8 +10,9 @@ import PlayerCard from '../player-card/element';
 const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? 'lightblue' : 'lightgrey',
   padding: 8,
-  minHeight: 40,
+  minHeight: 60,
   boxSizing: 'content-box',
+  overflowX: 'scroll',
 });
 
 class PlayerBucket extends React.Component {
@@ -29,7 +30,7 @@ class PlayerBucket extends React.Component {
               ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}
             >
-              <div>
+              <div style={{ whiteSpace: 'nowrap' }}>
                 {players.map(player => (
                   <PlayerCard player={player} key={player.get('id')} />
                 ))}

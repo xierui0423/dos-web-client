@@ -1,8 +1,8 @@
 export default [
-  { name: 'Login', urls: ['/login'] },
-  { name: 'User', urls: ['/user', '/'] },
-  { name: 'Market', urls: ['/market', '/'] },
-  { name: 'Club', urls: ['/club', '/'] },
-  { name: 'Tactic', urls: ['/tactic', '/'] },
+  { name: 'Login', url: '/login', isPublic: true },
+  { name: 'User', url: '/user' },
+  { name: 'Market', url: '/market' },
+  { name: 'Club', url: '/club' },
+  { name: 'Tactic', url: '/tactic' },
 ];
 

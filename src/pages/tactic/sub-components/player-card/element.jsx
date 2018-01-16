@@ -13,10 +13,16 @@ const getItemStyle = (draggableStyle, isDragging) => ({
   height: 40,
   display: 'inline-block',
   // change background colour if dragging
-  background: isDragging ? 'lightgreen' : 'grey',
+  // background: isDragging ? 'lightgreen' : 'grey',
 
   // styles we need to apply on draggables
   ...draggableStyle,
+});
+
+const getAvatarStyle = isDragging => ({
+  // change background colour if dragging
+  background: isDragging ? 'lightgreen' : 'grey',
+  cursor: 'pointer',
 });
 
 class PlayerCard extends React.Component {
@@ -26,7 +32,7 @@ class PlayerCard extends React.Component {
     return (
       <Draggable draggableId={player.get('id')}>
         {(provided, snapshot) => (
-          <div className="test" style={{ display: 'inline-block', verticalAlign: 'top', fontSize: 0 }}>
+          <div style={{ display: 'inline-block', verticalAlign: 'top', fontSize: 0 }}>
             <div
               ref={provided.innerRef}
               style={getItemStyle(
@@ -35,7 +41,10 @@ class PlayerCard extends React.Component {
               )}
               {...provided.dragHandleProps}
             >
-              <Avatar>
+              <Avatar style={getAvatarStyle(
+                snapshot.isDragging,
+              )}
+              >
                 {player.get('name')}
               </Avatar>
             </div>

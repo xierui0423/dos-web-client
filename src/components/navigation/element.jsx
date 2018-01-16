@@ -7,15 +7,16 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 
-export const Navigation = ({ navigate, navigationItems, location }) =>
+export const Navigation = ({ navigate, navigationItems, location, loggedIn }) =>
     (<List>
       {
             navigationItems.map(
                 (item) => {
-                  const url = item.get('urls').get(0);
-                  const selected = item.get('urls').contains(location.pathname);
+                  const url = item.get('url');
+                  const selected = url === location.pathname;
+                  const isPublicNav = item.get('isPublic');
 
-                  return (<MenuItem
+                  return ((loggedIn && !isPublicNav) || (!loggedIn && isPublicNav)) ? (<MenuItem
                     key={url}
                     selected={selected}
                     onClick={() => {
@@ -23,7 +24,7 @@ export const Navigation = ({ navigate, navigationItems, location }) =>
                     }}
                   >
                     {item.get('name')}
-                  </MenuItem>);
+                  </MenuItem>) : null;
                 },
             )
         }
@@ -31,11 +32,12 @@ export const Navigation = ({ navigate, navigationItems, location }) =>
 
 Navigation.propTypes = {
   location: PropTypes.object.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
   navigate: PropTypes.func.isRequired,
   navigationItems: ImmutablePropTypes.list.isRequired,
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = state => ({ loggedIn: state.get('userData').get('id') >= 0 });
 
 const NavigationContainer = connect(
     mapStateToProps,

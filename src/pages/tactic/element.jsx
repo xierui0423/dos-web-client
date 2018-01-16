@@ -6,11 +6,54 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Button from 'material-ui/Button';
-
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
 import { updateTactic } from '../club/action-creators/club';
 import PlayerBucket from './sub-components/player-bucket/element';
 
 import confirmation from '../../components/confirmation/element';
+
+const formations = [{
+  name: '5-4-1',
+  defenders: 5,
+  midfielders: 4,
+  attackers: 1,
+}, {
+  name: '5-3-2',
+  defenders: 5,
+  midfielders: 3,
+  attackers: 2,
+}, {
+  name: '4-5-1',
+  defenders: 4,
+  midfielders: 5,
+  attackers: 1,
+}, {
+  name: '4-4-2',
+  defenders: 4,
+  midfielders: 4,
+  attackers: 2,
+}, {
+  name: '4-3-3',
+  defenders: 4,
+  midfielders: 3,
+  attackers: 3,
+}, {
+  name: '3-6-1',
+  defenders: 3,
+  midfielders: 6,
+  attackers: 1,
+}, {
+  name: '3-5-2',
+  defenders: 3,
+  midfielders: 5,
+  attackers: 2,
+}, {
+  name: '3-4-3',
+  defenders: 3,
+  midfielders: 4,
+  attackers: 3,
+}];
 
 class TacticPage extends React.Component {
   constructor(props) {
@@ -37,8 +80,10 @@ class TacticPage extends React.Component {
       defenders,
       midfielders,
       attackers,
+      formation: tactic.get('formation'),
     };
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.handleChangeFormation = this.handleChangeFormation.bind(this);
   }
 
   onDragEnd(result) {
@@ -67,6 +112,10 @@ class TacticPage extends React.Component {
     });
 
     this.setState(newState);
+  }
+
+  handleChangeFormation(event) {
+    this.setState({ formation: event.target.value });
   }
 
   // Normally you would want to split things out into separate components.
@@ -103,12 +152,24 @@ class TacticPage extends React.Component {
             />
           </div>
         </DragDropContext>
+
+        <Select
+          value={this.state.formation}
+          onChange={this.handleChangeFormation}
+        >
+          {formations.map(f => <MenuItem value={f.name}>{f.name}</MenuItem>)}
+        </Select>
+
         <Button
           raised
           color="primary"
           onClick={() => {
-            if (this.state.goalKeepers.size && this.state.defenders.size
-              && this.state.midfielders.size && this.state.attackers.size) {
+            const formation = formations.find(f => f.name === this.state.formation);
+
+            if (this.state.goalKeepers.size === 1
+              && this.state.defenders.size === formation.defenders
+              && this.state.midfielders.size === formation.midfielders
+              && this.state.attackers.size === formation.attackers) {
               confirmation({
                 title: 'Save',
                 text: 'Are you sure to save the tactic?',
@@ -118,6 +179,7 @@ class TacticPage extends React.Component {
                     defenders: this.state.defenders.map(p => p.get('id')),
                     midfielders: this.state.midfielders.map(p => p.get('id')),
                     attackers: this.state.attackers.map(p => p.get('id')),
+                    formation: this.state.formation,
                   });
                 },
               });

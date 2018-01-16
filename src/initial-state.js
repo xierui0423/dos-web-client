@@ -6,7 +6,7 @@ export default Immutable.fromJS(
     userData: { loadFlag: -2 },
     marketData: { loadFlag: -2 },
     clubData: {
-      loadFlag: -2,
+      loadFlag: -2, // -2 not loaded, -1 loading error, 0 loading, 1 loading succeeded
       players: [],
       tactic: {
         formation: 0,

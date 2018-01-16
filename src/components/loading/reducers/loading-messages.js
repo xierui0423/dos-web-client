@@ -30,7 +30,7 @@ export default (state = InitialState.get('loadingMessages'), action) => {
     loadingMessages = loadingMessages.filter(msg => msg.timestamp !== action.resolveTimestamp);
     loadingMessages.push({
       status: -1,
-      message: (action.error && action.error.responseText) || action.error || 'Error Happened!',
+      message: (action.error && action.error.responseJSON.message) || action.error || 'Error Happened!',
       resolveTimestamp: action.resolveTimestamp,
       timestamp: action.meta.timestamp,
     });
